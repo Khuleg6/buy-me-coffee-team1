@@ -1,8 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
-import { writeFile, mkdir } from "fs/promises";
-import { join } from "path";
+import { put } from "@vercel/blob";
 import { prisma } from "@/lib/prisma";
 import { verifyToken } from "@/lib/auth";
+import { deleteManagedBlob, sanitizeBlobFilename } from "@/lib/blob";
 
 function getUserId(req: NextRequest): number | null {
   const token =
@@ -26,32 +26,40 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "No file provided" }, { status: 400 });
     }
 
-    const bytes = await file.arrayBuffer();
-    const buffer = Buffer.from(bytes);
-
-    const uploadDir = join(process.cwd(), "public", "uploads");
-    await mkdir(uploadDir, { recursive: true });
-
-    const filename = `avatar-${Date.now()}-${file.name.replace(/\s+/g, "_")}`;
-    await writeFile(join(uploadDir, filename), buffer);
-
-    const avatarImageUrl = `/uploads/${filename}`;
-
     const user = await prisma.user.findUnique({
       where: { id: userId },
-      select: { profileId: true },
+      select: {
+        profileId: true,
+        Profile: { select: { avatarImage: true } },
+      },
     });
 
     if (!user) {
       return NextResponse.json({ error: "User not found" }, { status: 404 });
     }
 
-    await prisma.profile.update({
-      where: { id: user.profileId },
-      data: { avatarImage: avatarImageUrl },
-    });
+    const blob = await put(
+      `avatars/${userId}/${sanitizeBlobFilename(file.name)}`,
+      file,
+      {
+        access: "public",
+        addRandomSuffix: true,
+      },
+    );
 
-    return NextResponse.json({ avatarImageUrl });
+    try {
+      await prisma.profile.update({
+        where: { id: user.profileId },
+        data: { avatarImage: blob.url },
+      });
+    } catch (error) {
+      await deleteManagedBlob(blob.url);
+      throw error;
+    }
+
+    await deleteManagedBlob(user.Profile.avatarImage);
+
+    return NextResponse.json({ avatarImageUrl: blob.url });
   } catch (err) {
     console.error("[avatar upload]", err);
     return NextResponse.json({ error: "Upload failed" }, { status: 500 });

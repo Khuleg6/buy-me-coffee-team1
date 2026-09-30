@@ -34,14 +34,14 @@ export default function Home() {
 
   const isPasswordValid = (value: string) => {
     if (value === "") return "Password cannot be empty";
-    if (
-      !/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/.test(
-        value,
-      )
-    )
-      return "Min 8 chars, uppercase, lowercase, number, special character.";
+    if (!/^(?=.*[A-Z])(?=.*\d).{8,}$/.test(value))
+      return "Use at least 8 characters, including an uppercase letter and a number.";
     return "";
   };
+
+  const canContinueUsername = isUsernameValid(username) === "";
+  const canCreateAccount =
+    isEmailValid(email) === "" && isPasswordValid(password) === "";
 
   const handleContinueUsername = () => {
     const err = isUsernameValid(username);
@@ -220,11 +220,11 @@ export default function Home() {
 
                 <button
                   onClick={handleContinueUsername}
-                  disabled={loading}
+                  disabled={loading || !canContinueUsername}
                   className={`w-full text-sm font-medium rounded-md py-2.5 transition-all duration-200 flex justify-center items-center ${
-                    loading
-                      ? "bg-gray-300 cursor-not-allowed"
-                      : "bg-[#E5E7EB] text-[#9CA3AF] hover:font-bold"
+                    loading || !canContinueUsername
+                      ? "bg-[#E5E7EB] text-[#9CA3AF] cursor-not-allowed"
+                      : "bg-[#18181B] text-white cursor-pointer hover:bg-black hover:font-bold"
                   }`}
                 >
                   {loading ? (
@@ -288,9 +288,18 @@ export default function Home() {
 
                 <button
                   onClick={handleContinueAccount}
-                  className="w-full bg-[#E5E7EB] text-[#9CA3AF] text-sm font-medium rounded-md py-2.5 hover:font-bold transition-all duration-200"
+                  disabled={loading || !canCreateAccount}
+                  className={`w-full text-sm font-medium rounded-md py-2.5 transition-all duration-200 flex justify-center items-center ${
+                    loading || !canCreateAccount
+                      ? "bg-[#E5E7EB] text-[#9CA3AF] cursor-not-allowed"
+                      : "bg-[#18181B] text-white cursor-pointer hover:bg-black hover:font-bold"
+                  }`}
                 >
-                  Continue
+                  {loading ? (
+                    <div className="w-5 h-5 border-2 border-gray-400 border-t-white rounded-full animate-spin" />
+                  ) : (
+                    "Continue"
+                  )}
                 </button>
               </>
             )}

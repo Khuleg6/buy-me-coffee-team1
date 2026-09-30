@@ -1,8 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
-import { writeFile, mkdir } from "fs/promises";
-import { join } from "path";
+import { put } from "@vercel/blob";
 import { prisma } from "@/lib/prisma";
 import { verifyToken } from "@/lib/auth";
+import { deleteManagedBlob, sanitizeBlobFilename } from "@/lib/blob";
 
 function getUserId(req: NextRequest): number | null {
   const token =
@@ -26,32 +26,40 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "No file provided" }, { status: 400 });
     }
 
-    const bytes = await file.arrayBuffer();
-    const buffer = Buffer.from(bytes);
-
-    const uploadDir = join(process.cwd(), "public", "uploads");
-    await mkdir(uploadDir, { recursive: true });
-
-    const filename = `cover-${Date.now()}-${file.name.replace(/\s+/g, "_")}`;
-    await writeFile(join(uploadDir, filename), buffer);
-
-    const coverImageUrl = `/uploads/${filename}`;
-
     const user = await prisma.user.findUnique({
       where: { id: userId },
-      select: { profileId: true },
+      select: {
+        profileId: true,
+        Profile: { select: { backgroundImage: true } },
+      },
     });
 
     if (!user) {
       return NextResponse.json({ error: "User not found" }, { status: 404 });
     }
 
-    await prisma.profile.update({
-      where: { id: user.profileId },
-      data: { backgroundImage: coverImageUrl },
-    });
+    const blob = await put(
+      `covers/${userId}/${sanitizeBlobFilename(file.name)}`,
+      file,
+      {
+        access: "public",
+        addRandomSuffix: true,
+      },
+    );
 
-    return NextResponse.json({ coverImageUrl });
+    try {
+      await prisma.profile.update({
+        where: { id: user.profileId },
+        data: { backgroundImage: blob.url },
+      });
+    } catch (error) {
+      await deleteManagedBlob(blob.url);
+      throw error;
+    }
+
+    await deleteManagedBlob(user.Profile.backgroundImage);
+
+    return NextResponse.json({ coverImageUrl: blob.url });
   } catch (err) {
     console.error("[cover upload]", err);
     return NextResponse.json({ error: "Upload failed" }, { status: 500 });
@@ -67,7 +75,10 @@ export async function DELETE(req: NextRequest) {
 
     const user = await prisma.user.findUnique({
       where: { id: userId },
-      select: { profileId: true },
+      select: {
+        profileId: true,
+        Profile: { select: { backgroundImage: true } },
+      },
     });
 
     if (!user) {
@@ -78,6 +89,8 @@ export async function DELETE(req: NextRequest) {
       where: { id: user.profileId },
       data: { backgroundImage: "" },
     });
+
+    await deleteManagedBlob(user.Profile.backgroundImage);
 
     return NextResponse.json({ ok: true });
   } catch (err) {
