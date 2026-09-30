@@ -25,6 +25,9 @@ export default function Login() {
     return "";
   };
 
+  const canLogin =
+    isEmailValid(email) === "" && isPasswordValid(password) === "";
+
   const handleLoginSubmit = async () => {
     const emailValidationErr = isEmailValid(email);
     const passwordValidationErr = isPasswordValid(password);
@@ -221,11 +224,11 @@ export default function Login() {
 
             <button
               onClick={handleLoginSubmit}
-              disabled={loading}
+              disabled={loading || !canLogin}
               className={`w-full text-sm font-medium rounded-md py-2.5 transition-all duration-200 flex justify-center items-center ${
-                loading
-                  ? "bg-gray-300 cursor-not-allowed"
-                  : "bg-[#E5E7EB] text-[#9CA3AF] hover:font-bold"
+                loading || !canLogin
+                  ? "bg-[#E5E7EB] text-[#9CA3AF] cursor-not-allowed"
+                  : "bg-[#18181B] text-white cursor-pointer hover:bg-black hover:font-bold"
               }`}
             >
               {loading ? (
