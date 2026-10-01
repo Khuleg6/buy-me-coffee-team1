@@ -1,7 +1,8 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Camera } from "lucide-react";
+import Image from "next/image";
 import type { ProfileData } from "../me/page";
 
 type Props = {
@@ -19,9 +20,34 @@ export default function ProfileStep({ data, onChange, onNext }: Props) {
   const [serverError, setServerError] = useState<string | null>(null);
   const fileRef = useRef<HTMLInputElement>(null);
 
+  useEffect(() => {
+    return () => {
+      if (preview) URL.revokeObjectURL(preview);
+    };
+  }, [preview]);
+
   function handlePhoto(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0];
     if (!file) return;
+
+    if (!/^image\/(png|jpeg|webp|gif|avif)$/.test(file.type)) {
+      setErrors((prev) => ({
+        ...prev,
+        photo: "Please select a PNG, JPEG, WebP, GIF, or AVIF image",
+      }));
+      e.target.value = "";
+      return;
+    }
+
+    if (file.size > 4 * 1024 * 1024) {
+      setErrors((prev) => ({
+        ...prev,
+        photo: "Please select an image smaller than 4 MB",
+      }));
+      e.target.value = "";
+      return;
+    }
+
     onChange({ ...data, photo: file });
     setPreview(URL.createObjectURL(file));
     setErrors((prev) => ({ ...prev, photo: undefined }));
@@ -46,6 +72,25 @@ export default function ProfileStep({ data, onChange, onNext }: Props) {
 
     try {
       const token = localStorage.getItem("token");
+      if (!token) {
+        throw new Error("Please log in again before saving your profile.");
+      }
+
+      const uploadData = new FormData();
+      uploadData.append("file", data.photo!);
+
+      const uploadRes = await fetch("/api/profile/avatar", {
+        method: "POST",
+        headers: { Authorization: `Bearer ${token}` },
+        body: uploadData,
+      });
+      const uploadResult = await uploadRes.json().catch(() => ({}));
+
+      if (!uploadRes.ok) {
+        throw new Error(
+          uploadResult.error || "Profile photo upload failed. Please try again.",
+        );
+      }
 
       const res = await fetch("/api/profile", {
         method: "PUT",
@@ -57,9 +102,7 @@ export default function ProfileStep({ data, onChange, onNext }: Props) {
           name: data.name,
           about: data.about,
           socialMediaURL: data.socialUrl,
-          avatarImage: preview ?? "",
-          backgroundImage: "",
-          successMessage: "",
+          avatarImage: uploadResult.avatarImageUrl,
         }),
       });
 
@@ -72,7 +115,11 @@ export default function ProfileStep({ data, onChange, onNext }: Props) {
 
       onNext();
     } catch (err) {
-      setServerError("Серверт холбогдож чадсангүй");
+      setServerError(
+        err instanceof Error
+          ? err.message
+          : "Unable to save your profile. Please try again.",
+      );
     } finally {
       setLoading(false);
     }
@@ -89,17 +136,20 @@ export default function ProfileStep({ data, onChange, onNext }: Props) {
         <button
           type="button"
           onClick={() => fileRef.current?.click()}
-          className={`w-32 h-32 rounded-full border-2 border-dashed flex items-center justify-center transition-colors overflow-hidden ${
+          className={`relative w-32 h-32 rounded-full border-2 border-dashed flex items-center justify-center transition-colors overflow-hidden ${
             errors.photo
               ? "border-red-400"
               : "border-gray-300 hover:border-gray-400"
           }`}
         >
           {preview ? (
-            <img
+            <Image
               src={preview}
-              alt="profile"
-              className="w-full h-full object-cover"
+              alt="Selected profile preview"
+              fill
+              unoptimized
+              sizes="128px"
+              className="object-cover"
             />
           ) : (
             <Camera className="w-7 h-7 text-gray-400" />

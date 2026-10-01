@@ -2,7 +2,11 @@ import { NextRequest, NextResponse } from "next/server";
 import { put } from "@vercel/blob";
 import { prisma } from "@/lib/prisma";
 import { verifyToken } from "@/lib/auth";
-import { deleteManagedBlob, sanitizeBlobFilename } from "@/lib/blob";
+import {
+  deleteManagedBlob,
+  profileImageUrl,
+  sanitizeBlobFilename,
+} from "@/lib/blob";
 
 function getUserId(req: NextRequest): number | null {
   const token =
@@ -26,6 +30,20 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "No file provided" }, { status: 400 });
     }
 
+    if (!/^image\/(png|jpeg|webp|gif|avif)$/.test(file.type)) {
+      return NextResponse.json(
+        { error: "Use a PNG, JPEG, WebP, GIF, or AVIF image" },
+        { status: 400 },
+      );
+    }
+
+    if (file.size > 4 * 1024 * 1024) {
+      return NextResponse.json(
+        { error: "Image must be smaller than 4 MB" },
+        { status: 400 },
+      );
+    }
+
     const user = await prisma.user.findUnique({
       where: { id: userId },
       select: {
@@ -42,15 +60,17 @@ export async function POST(req: NextRequest) {
       `covers/${userId}/${sanitizeBlobFilename(file.name)}`,
       file,
       {
-        access: "public",
+        access: "private",
         addRandomSuffix: true,
       },
     );
 
+    const coverImageUrl = profileImageUrl(blob.pathname);
+
     try {
       await prisma.profile.update({
         where: { id: user.profileId },
-        data: { backgroundImage: blob.url },
+        data: { backgroundImage: coverImageUrl },
       });
     } catch (error) {
       await deleteManagedBlob(blob.url);
@@ -59,7 +79,7 @@ export async function POST(req: NextRequest) {
 
     await deleteManagedBlob(user.Profile.backgroundImage);
 
-    return NextResponse.json({ coverImageUrl: blob.url });
+    return NextResponse.json({ coverImageUrl });
   } catch (err) {
     console.error("[cover upload]", err);
     return NextResponse.json({ error: "Upload failed" }, { status: 500 });

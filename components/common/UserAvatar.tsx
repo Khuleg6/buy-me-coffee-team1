@@ -15,7 +15,7 @@ export function UserAvatar({
   size = "md",
   className = "",
 }: UserAvatarProps) {
-  const [failed, setFailed] = useState(false);
+  const [failedSrc, setFailedSrc] = useState<string | null>(null);
   const sizes = {
     sm: "size-8 text-xs",
     md: "size-10 text-sm",
@@ -29,12 +29,12 @@ export function UserAvatar({
       .map((part) => part[0]?.toUpperCase())
       .join("") || "?";
 
-  if (src && !failed) {
+  if (src && src !== failedSrc) {
     return (
       <img
         src={src}
         alt={`${name}'s avatar`}
-        onError={() => setFailed(true)}
+        onError={() => setFailedSrc(src)}
         className={`${sizes[size]} shrink-0 rounded-full object-cover ${className}`}
       />
     );

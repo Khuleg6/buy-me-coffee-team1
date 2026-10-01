@@ -1,6 +1,6 @@
 "use client";
 
-import { Camera } from "lucide-react";
+import { Camera, CheckCircle2 } from "lucide-react";
 import { ChangeEvent, FormEvent, useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { AppLayout } from "@/components/layout/AppLayout";
@@ -17,6 +17,7 @@ export default function AccountClient() {
   const [status, setStatus] = useState("");
   const [error, setError] = useState("");
   const [saving, setSaving] = useState(false);
+  const [uploading, setUploading] = useState(false);
 
   useEffect(() => {
     apiFetch<CurrentUser>("/api/users/me")
@@ -35,6 +36,13 @@ export default function AccountClient() {
       });
   }, [router]);
 
+  useEffect(() => {
+    if (!status) return;
+
+    const timeout = window.setTimeout(() => setStatus(""), 4000);
+    return () => window.clearTimeout(timeout);
+  }, [status]);
+
   const updateField = (field: keyof ProfileSummary, value: string) => {
     setForm((current) => (current ? { ...current, [field]: value } : current));
     setStatus("");
@@ -43,7 +51,18 @@ export default function AccountClient() {
   const uploadAvatar = async (event: ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (!file) return;
+    event.target.value = "";
     setError("");
+    if (!/^image\/(png|jpeg|webp|gif|avif)$/.test(file.type)) {
+      setError("Please select a PNG, JPEG, WebP, GIF, or AVIF image.");
+      return;
+    }
+    if (file.size > 4 * 1024 * 1024) {
+      setError("Please select an image smaller than 4 MB.");
+      return;
+    }
+
+    setUploading(true);
     const data = new FormData();
     data.append("file", file);
     try {
@@ -63,8 +82,11 @@ export default function AccountClient() {
             }
           : current,
       );
+      setStatus("Photo saved successfully.");
     } catch (reason) {
       setError(reason instanceof Error ? reason.message : "Upload failed.");
+    } finally {
+      setUploading(false);
     }
   };
 
@@ -84,7 +106,7 @@ export default function AccountClient() {
       setUser((current) =>
         current ? { ...current, profile: saved } : current,
       );
-      setStatus("Changes saved.");
+      setStatus("Changes saved successfully.");
     } catch (reason) {
       setError(
         reason instanceof Error ? reason.message : "Unable to save changes.",
@@ -118,9 +140,11 @@ export default function AccountClient() {
             <button
               type="button"
               onClick={() => fileRef.current?.click()}
-              className="inline-flex h-9 items-center gap-2 rounded-md border border-zinc-200 px-3 text-sm font-medium hover:bg-zinc-50"
+              disabled={uploading}
+              className="inline-flex h-9 items-center gap-2 rounded-md border border-zinc-200 px-3 text-sm font-medium hover:bg-zinc-50 disabled:cursor-not-allowed disabled:opacity-50"
             >
-              <Camera className="size-4" /> Change photo
+              <Camera className="size-4" />
+              {uploading ? "Uploading…" : "Change photo"}
             </button>
             <input
               ref={fileRef}
@@ -193,7 +217,6 @@ export default function AccountClient() {
 
         <div className="flex items-center justify-end gap-4">
           {error && <p className="text-sm text-red-600">{error}</p>}
-          {status && <p className="text-sm text-green-700">{status}</p>}
           <button
             type="submit"
             disabled={saving}
@@ -203,6 +226,16 @@ export default function AccountClient() {
           </button>
         </div>
       </form>
+      {status && (
+        <div
+          role="status"
+          aria-live="polite"
+          className="fixed left-1/2 top-20 z-50 flex w-max max-w-[calc(100vw-2rem)] -translate-x-1/2 items-center gap-2 rounded-lg border border-green-200 bg-green-50 px-4 py-3 text-sm font-medium text-green-900 shadow-lg"
+        >
+          <CheckCircle2 aria-hidden="true" className="size-5 shrink-0" />
+          {status}
+        </div>
+      )}
     </AppLayout>
   );
 }
