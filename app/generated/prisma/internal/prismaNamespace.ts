@@ -388,7 +388,8 @@ export const ModelName = {
   Donation: 'Donation',
   Profile: 'Profile',
   User: 'User',
-  Transaction: 'Transaction'
+  Transaction: 'Transaction',
+  DonationIntent: 'DonationIntent'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -404,7 +405,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "bankCard" | "donation" | "profile" | "user" | "transaction"
+    modelProps: "bankCard" | "donation" | "profile" | "user" | "transaction" | "donationIntent"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -778,6 +779,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    DonationIntent: {
+      payload: Prisma.$DonationIntentPayload<ExtArgs>
+      fields: Prisma.DonationIntentFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.DonationIntentFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DonationIntentPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.DonationIntentFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DonationIntentPayload>
+        }
+        findFirst: {
+          args: Prisma.DonationIntentFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DonationIntentPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.DonationIntentFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DonationIntentPayload>
+        }
+        findMany: {
+          args: Prisma.DonationIntentFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DonationIntentPayload>[]
+        }
+        create: {
+          args: Prisma.DonationIntentCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DonationIntentPayload>
+        }
+        createMany: {
+          args: Prisma.DonationIntentCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.DonationIntentCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DonationIntentPayload>[]
+        }
+        delete: {
+          args: Prisma.DonationIntentDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DonationIntentPayload>
+        }
+        update: {
+          args: Prisma.DonationIntentUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DonationIntentPayload>
+        }
+        deleteMany: {
+          args: Prisma.DonationIntentDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.DonationIntentUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.DonationIntentUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DonationIntentPayload>[]
+        }
+        upsert: {
+          args: Prisma.DonationIntentUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DonationIntentPayload>
+        }
+        aggregate: {
+          args: Prisma.DonationIntentAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateDonationIntent>
+        }
+        groupBy: {
+          args: Prisma.DonationIntentGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.DonationIntentGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.DonationIntentCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.DonationIntentCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -839,6 +914,8 @@ export const DonationScalarFieldEnum = {
   socialURLOrBuyMeCoffee: 'socialURLOrBuyMeCoffee',
   donorId: 'donorId',
   recipientId: 'recipientId',
+  transactionId: 'transactionId',
+  status: 'status',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
@@ -854,6 +931,7 @@ export const ProfileScalarFieldEnum = {
   socialMediaURL: 'socialMediaURL',
   backgroundImage: 'backgroundImage',
   successMessage: 'successMessage',
+  paymentQrImage: 'paymentQrImage',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
@@ -879,11 +957,33 @@ export const TransactionScalarFieldEnum = {
   amount: 'amount',
   status: 'status',
   paymentType: 'paymentType',
+  recipientId: 'recipientId',
+  donorId: 'donorId',
+  specialMessage: 'specialMessage',
+  socialURLOrBuyMeCoffee: 'socialURLOrBuyMeCoffee',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
 
 export type TransactionScalarFieldEnum = (typeof TransactionScalarFieldEnum)[keyof typeof TransactionScalarFieldEnum]
+
+
+export const DonationIntentScalarFieldEnum = {
+  id: 'id',
+  token: 'token',
+  amount: 'amount',
+  specialMessage: 'specialMessage',
+  socialURLOrBuyMeCoffee: 'socialURLOrBuyMeCoffee',
+  donorId: 'donorId',
+  recipientId: 'recipientId',
+  status: 'status',
+  expiresAt: 'expiresAt',
+  confirmedAt: 'confirmedAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type DonationIntentScalarFieldEnum = (typeof DonationIntentScalarFieldEnum)[keyof typeof DonationIntentScalarFieldEnum]
 
 
 export const SortOrder = {
@@ -959,6 +1059,20 @@ export type ListDateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaM
 
 
 /**
+ * Reference to a field of type 'DonationStatus'
+ */
+export type EnumDonationStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DonationStatus'>
+    
+
+
+/**
+ * Reference to a field of type 'DonationStatus[]'
+ */
+export type ListEnumDonationStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DonationStatus[]'>
+    
+
+
+/**
  * Reference to a field of type 'Float'
  */
 export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float'>
@@ -969,6 +1083,20 @@ export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, '
  * Reference to a field of type 'Float[]'
  */
 export type ListFloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float[]'>
+    
+
+
+/**
+ * Reference to a field of type 'DonationIntentStatus'
+ */
+export type EnumDonationIntentStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DonationIntentStatus'>
+    
+
+
+/**
+ * Reference to a field of type 'DonationIntentStatus[]'
+ */
+export type ListEnumDonationIntentStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DonationIntentStatus[]'>
     
 
 /**
@@ -1086,6 +1214,7 @@ export type GlobalOmitConfig = {
   profile?: Prisma.ProfileOmit
   user?: Prisma.UserOmit
   transaction?: Prisma.TransactionOmit
+  donationIntent?: Prisma.DonationIntentOmit
 }
 
 /* Types for Logging */

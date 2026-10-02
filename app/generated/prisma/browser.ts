@@ -42,3 +42,8 @@ export type User = Prisma.UserModel
  * 
  */
 export type Transaction = Prisma.TransactionModel
+/**
+ * Model DonationIntent
+ * 
+ */
+export type DonationIntent = Prisma.DonationIntentModel

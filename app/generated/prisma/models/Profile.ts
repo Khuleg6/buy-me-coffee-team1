@@ -42,6 +42,7 @@ export type ProfileMinAggregateOutputType = {
   socialMediaURL: string | null
   backgroundImage: string | null
   successMessage: string | null
+  paymentQrImage: string | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -54,6 +55,7 @@ export type ProfileMaxAggregateOutputType = {
   socialMediaURL: string | null
   backgroundImage: string | null
   successMessage: string | null
+  paymentQrImage: string | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -66,6 +68,7 @@ export type ProfileCountAggregateOutputType = {
   socialMediaURL: number
   backgroundImage: number
   successMessage: number
+  paymentQrImage: number
   createdAt: number
   updatedAt: number
   _all: number
@@ -88,6 +91,7 @@ export type ProfileMinAggregateInputType = {
   socialMediaURL?: true
   backgroundImage?: true
   successMessage?: true
+  paymentQrImage?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -100,6 +104,7 @@ export type ProfileMaxAggregateInputType = {
   socialMediaURL?: true
   backgroundImage?: true
   successMessage?: true
+  paymentQrImage?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -112,6 +117,7 @@ export type ProfileCountAggregateInputType = {
   socialMediaURL?: true
   backgroundImage?: true
   successMessage?: true
+  paymentQrImage?: true
   createdAt?: true
   updatedAt?: true
   _all?: true
@@ -211,6 +217,7 @@ export type ProfileGroupByOutputType = {
   socialMediaURL: string
   backgroundImage: string
   successMessage: string
+  paymentQrImage: string
   createdAt: Date
   updatedAt: Date
   _count: ProfileCountAggregateOutputType | null
@@ -246,6 +253,7 @@ export type ProfileWhereInput = {
   socialMediaURL?: Prisma.StringFilter<"Profile"> | string
   backgroundImage?: Prisma.StringFilter<"Profile"> | string
   successMessage?: Prisma.StringFilter<"Profile"> | string
+  paymentQrImage?: Prisma.StringFilter<"Profile"> | string
   createdAt?: Prisma.DateTimeFilter<"Profile"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Profile"> | Date | string
   User?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
@@ -259,6 +267,7 @@ export type ProfileOrderByWithRelationInput = {
   socialMediaURL?: Prisma.SortOrder
   backgroundImage?: Prisma.SortOrder
   successMessage?: Prisma.SortOrder
+  paymentQrImage?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   User?: Prisma.UserOrderByWithRelationInput
@@ -275,6 +284,7 @@ export type ProfileWhereUniqueInput = Prisma.AtLeast<{
   socialMediaURL?: Prisma.StringFilter<"Profile"> | string
   backgroundImage?: Prisma.StringFilter<"Profile"> | string
   successMessage?: Prisma.StringFilter<"Profile"> | string
+  paymentQrImage?: Prisma.StringFilter<"Profile"> | string
   createdAt?: Prisma.DateTimeFilter<"Profile"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Profile"> | Date | string
   User?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
@@ -288,6 +298,7 @@ export type ProfileOrderByWithAggregationInput = {
   socialMediaURL?: Prisma.SortOrder
   backgroundImage?: Prisma.SortOrder
   successMessage?: Prisma.SortOrder
+  paymentQrImage?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   _count?: Prisma.ProfileCountOrderByAggregateInput
@@ -308,6 +319,7 @@ export type ProfileScalarWhereWithAggregatesInput = {
   socialMediaURL?: Prisma.StringWithAggregatesFilter<"Profile"> | string
   backgroundImage?: Prisma.StringWithAggregatesFilter<"Profile"> | string
   successMessage?: Prisma.StringWithAggregatesFilter<"Profile"> | string
+  paymentQrImage?: Prisma.StringWithAggregatesFilter<"Profile"> | string
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Profile"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Profile"> | Date | string
 }
@@ -319,6 +331,7 @@ export type ProfileCreateInput = {
   socialMediaURL: string
   backgroundImage: string
   successMessage: string
+  paymentQrImage?: string
   createdAt?: Date | string
   updatedAt: Date | string
   User?: Prisma.UserCreateNestedOneWithoutProfileInput
@@ -332,6 +345,7 @@ export type ProfileUncheckedCreateInput = {
   socialMediaURL: string
   backgroundImage: string
   successMessage: string
+  paymentQrImage?: string
   createdAt?: Date | string
   updatedAt: Date | string
   User?: Prisma.UserUncheckedCreateNestedOneWithoutProfileInput
@@ -344,6 +358,7 @@ export type ProfileUpdateInput = {
   socialMediaURL?: Prisma.StringFieldUpdateOperationsInput | string
   backgroundImage?: Prisma.StringFieldUpdateOperationsInput | string
   successMessage?: Prisma.StringFieldUpdateOperationsInput | string
+  paymentQrImage?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   User?: Prisma.UserUpdateOneWithoutProfileNestedInput
@@ -357,6 +372,7 @@ export type ProfileUncheckedUpdateInput = {
   socialMediaURL?: Prisma.StringFieldUpdateOperationsInput | string
   backgroundImage?: Prisma.StringFieldUpdateOperationsInput | string
   successMessage?: Prisma.StringFieldUpdateOperationsInput | string
+  paymentQrImage?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   User?: Prisma.UserUncheckedUpdateOneWithoutProfileNestedInput
@@ -370,6 +386,7 @@ export type ProfileCreateManyInput = {
   socialMediaURL: string
   backgroundImage: string
   successMessage: string
+  paymentQrImage?: string
   createdAt?: Date | string
   updatedAt: Date | string
 }
@@ -381,6 +398,7 @@ export type ProfileUpdateManyMutationInput = {
   socialMediaURL?: Prisma.StringFieldUpdateOperationsInput | string
   backgroundImage?: Prisma.StringFieldUpdateOperationsInput | string
   successMessage?: Prisma.StringFieldUpdateOperationsInput | string
+  paymentQrImage?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -393,6 +411,7 @@ export type ProfileUncheckedUpdateManyInput = {
   socialMediaURL?: Prisma.StringFieldUpdateOperationsInput | string
   backgroundImage?: Prisma.StringFieldUpdateOperationsInput | string
   successMessage?: Prisma.StringFieldUpdateOperationsInput | string
+  paymentQrImage?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -405,6 +424,7 @@ export type ProfileCountOrderByAggregateInput = {
   socialMediaURL?: Prisma.SortOrder
   backgroundImage?: Prisma.SortOrder
   successMessage?: Prisma.SortOrder
+  paymentQrImage?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -421,6 +441,7 @@ export type ProfileMaxOrderByAggregateInput = {
   socialMediaURL?: Prisma.SortOrder
   backgroundImage?: Prisma.SortOrder
   successMessage?: Prisma.SortOrder
+  paymentQrImage?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -433,6 +454,7 @@ export type ProfileMinOrderByAggregateInput = {
   socialMediaURL?: Prisma.SortOrder
   backgroundImage?: Prisma.SortOrder
   successMessage?: Prisma.SortOrder
+  paymentQrImage?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -467,6 +489,7 @@ export type ProfileCreateWithoutUserInput = {
   socialMediaURL: string
   backgroundImage: string
   successMessage: string
+  paymentQrImage?: string
   createdAt?: Date | string
   updatedAt: Date | string
 }
@@ -479,6 +502,7 @@ export type ProfileUncheckedCreateWithoutUserInput = {
   socialMediaURL: string
   backgroundImage: string
   successMessage: string
+  paymentQrImage?: string
   createdAt?: Date | string
   updatedAt: Date | string
 }
@@ -506,6 +530,7 @@ export type ProfileUpdateWithoutUserInput = {
   socialMediaURL?: Prisma.StringFieldUpdateOperationsInput | string
   backgroundImage?: Prisma.StringFieldUpdateOperationsInput | string
   successMessage?: Prisma.StringFieldUpdateOperationsInput | string
+  paymentQrImage?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -518,6 +543,7 @@ export type ProfileUncheckedUpdateWithoutUserInput = {
   socialMediaURL?: Prisma.StringFieldUpdateOperationsInput | string
   backgroundImage?: Prisma.StringFieldUpdateOperationsInput | string
   successMessage?: Prisma.StringFieldUpdateOperationsInput | string
+  paymentQrImage?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -532,6 +558,7 @@ export type ProfileSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   socialMediaURL?: boolean
   backgroundImage?: boolean
   successMessage?: boolean
+  paymentQrImage?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   User?: boolean | Prisma.Profile$UserArgs<ExtArgs>
@@ -545,6 +572,7 @@ export type ProfileSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exten
   socialMediaURL?: boolean
   backgroundImage?: boolean
   successMessage?: boolean
+  paymentQrImage?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }, ExtArgs["result"]["profile"]>
@@ -557,6 +585,7 @@ export type ProfileSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exten
   socialMediaURL?: boolean
   backgroundImage?: boolean
   successMessage?: boolean
+  paymentQrImage?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }, ExtArgs["result"]["profile"]>
@@ -569,11 +598,12 @@ export type ProfileSelectScalar = {
   socialMediaURL?: boolean
   backgroundImage?: boolean
   successMessage?: boolean
+  paymentQrImage?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type ProfileOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "about" | "avatarImage" | "socialMediaURL" | "backgroundImage" | "successMessage" | "createdAt" | "updatedAt", ExtArgs["result"]["profile"]>
+export type ProfileOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "about" | "avatarImage" | "socialMediaURL" | "backgroundImage" | "successMessage" | "paymentQrImage" | "createdAt" | "updatedAt", ExtArgs["result"]["profile"]>
 export type ProfileInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   User?: boolean | Prisma.Profile$UserArgs<ExtArgs>
 }
@@ -593,6 +623,7 @@ export type $ProfilePayload<ExtArgs extends runtime.Types.Extensions.InternalArg
     socialMediaURL: string
     backgroundImage: string
     successMessage: string
+    paymentQrImage: string
     createdAt: Date
     updatedAt: Date
   }, ExtArgs["result"]["profile"]>
@@ -1026,6 +1057,7 @@ export interface ProfileFieldRefs {
   readonly socialMediaURL: Prisma.FieldRef<"Profile", 'String'>
   readonly backgroundImage: Prisma.FieldRef<"Profile", 'String'>
   readonly successMessage: Prisma.FieldRef<"Profile", 'String'>
+  readonly paymentQrImage: Prisma.FieldRef<"Profile", 'String'>
   readonly createdAt: Prisma.FieldRef<"Profile", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"Profile", 'DateTime'>
 }

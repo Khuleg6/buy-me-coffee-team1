@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
+import { signOut } from "@/lib/logout";
 import StepIndicator from "../components/Stepindicator";
 import ProfileStep from "../components/Profilestep";
 import PaymentStep from "../components/Payementstep";
@@ -28,6 +29,8 @@ const STEPS = ["Profile", "Payment info", "Finish"];
 
 export default function MePage() {
   const router = useRouter();
+  const [loggingOut, setLoggingOut] = useState(false);
+  const [logoutError, setLogoutError] = useState("");
   const [currentStep, setCurrentStep] = useState(1);
   const [profileData, setProfileData] = useState<ProfileData>({
     photo: null,
@@ -50,7 +53,7 @@ export default function MePage() {
     if (!token) {
       router.push("/login");
     }
-  }, []);
+  }, [router]);
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -71,9 +74,32 @@ export default function MePage() {
           </svg>
           Buy Me Coffee
         </div>
-        <button className="text-sm text-gray-500 hover:text-gray-700 border border-gray-200 rounded-lg px-3 py-1.5 transition-colors">
-          Гарах
-        </button>
+        <div className="flex items-center gap-3">
+          {logoutError && (
+            <p role="alert" className="text-sm text-red-600">
+              {logoutError}
+            </p>
+          )}
+          <button
+            type="button"
+            disabled={loggingOut}
+            onClick={async () => {
+              setLoggingOut(true);
+              setLogoutError("");
+              try {
+                await signOut();
+              } catch (error) {
+                setLogoutError(
+                  error instanceof Error ? error.message : "Could not log out.",
+                );
+                setLoggingOut(false);
+              }
+            }}
+            className="text-sm text-gray-500 hover:text-gray-700 border border-gray-200 rounded-lg px-3 py-1.5 transition-colors disabled:cursor-not-allowed disabled:opacity-50"
+          >
+            {loggingOut ? "Гарч байна…" : "Гарах"}
+          </button>
+        </div>
       </nav>
 
       <div className="max-w-lg mx-auto px-4 py-10">

@@ -55,7 +55,8 @@ export const ModelName = {
   Donation: 'Donation',
   Profile: 'Profile',
   User: 'User',
-  Transaction: 'Transaction'
+  Transaction: 'Transaction',
+  DonationIntent: 'DonationIntent'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -96,6 +97,8 @@ export const DonationScalarFieldEnum = {
   socialURLOrBuyMeCoffee: 'socialURLOrBuyMeCoffee',
   donorId: 'donorId',
   recipientId: 'recipientId',
+  transactionId: 'transactionId',
+  status: 'status',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
@@ -111,6 +114,7 @@ export const ProfileScalarFieldEnum = {
   socialMediaURL: 'socialMediaURL',
   backgroundImage: 'backgroundImage',
   successMessage: 'successMessage',
+  paymentQrImage: 'paymentQrImage',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
@@ -136,11 +140,33 @@ export const TransactionScalarFieldEnum = {
   amount: 'amount',
   status: 'status',
   paymentType: 'paymentType',
+  recipientId: 'recipientId',
+  donorId: 'donorId',
+  specialMessage: 'specialMessage',
+  socialURLOrBuyMeCoffee: 'socialURLOrBuyMeCoffee',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
 
 export type TransactionScalarFieldEnum = (typeof TransactionScalarFieldEnum)[keyof typeof TransactionScalarFieldEnum]
+
+
+export const DonationIntentScalarFieldEnum = {
+  id: 'id',
+  token: 'token',
+  amount: 'amount',
+  specialMessage: 'specialMessage',
+  socialURLOrBuyMeCoffee: 'socialURLOrBuyMeCoffee',
+  donorId: 'donorId',
+  recipientId: 'recipientId',
+  status: 'status',
+  expiresAt: 'expiresAt',
+  confirmedAt: 'confirmedAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type DonationIntentScalarFieldEnum = (typeof DonationIntentScalarFieldEnum)[keyof typeof DonationIntentScalarFieldEnum]
 
 
 export const SortOrder = {

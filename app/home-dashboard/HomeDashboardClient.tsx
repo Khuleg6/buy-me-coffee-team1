@@ -1,7 +1,7 @@
 "use client";
 
 import { Copy, Heart, Users } from "lucide-react";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { AppLayout } from "@/components/layout/AppLayout";
 import { EmptyState } from "@/components/common/EmptyState";
@@ -23,19 +23,36 @@ export default function HomeDashboardClient() {
   const [selectedAmounts, setSelectedAmounts] = useState<number[]>([]);
   const [copied, setCopied] = useState(false);
   const [error, setError] = useState("");
+  const [notification, setNotification] = useState("");
+  const latestDonationId = useRef<number | null>(null);
 
   useEffect(() => {
-    apiFetch<DashboardStats>("/api/dashboard/me")
-      .then(setDashboard)
+    let active = true;
+    const load = () => apiFetch<DashboardStats>("/api/dashboard/me")
+      .then((data) => {
+        if (!active) return;
+        const newest = data.donations[0];
+        if (latestDonationId.current !== null && newest && newest.id !== latestDonationId.current) {
+          setNotification(`${newest.donor.name} sent ${newest.amount} virtual coffees!`);
+        }
+        latestDonationId.current = newest?.id ?? 0;
+        setDashboard(data);
+      })
       .catch((reason: unknown) => {
+        if (!active) return;
         const message =
           reason instanceof Error ? reason.message : "Unable to load dashboard.";
         if (message === "Unauthorized") {
           router.replace("/login");
           return;
         }
-        setError(message);
+        if (!latestDonationId.current) setError(message);
       });
+    void load();
+    const interval = window.setInterval(() => {
+      if (document.visibilityState === "visible") void load();
+    }, 5000);
+    return () => { active = false; window.clearInterval(interval); };
   }, [router]);
 
   const visibleDonations = useMemo(() => {
@@ -86,6 +103,12 @@ export default function HomeDashboardClient() {
         avatarImage: user.profile.avatarImage,
       }}
     >
+      {notification && (
+        <div role="status" className="mb-5 flex items-center justify-between gap-4 rounded-lg border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-900">
+          <span>New demo support: {notification}</span>
+          <button type="button" onClick={() => setNotification("")} aria-label="Dismiss notification" className="min-h-11 min-w-11 rounded-md font-semibold hover:bg-emerald-100">×</button>
+        </div>
+      )}
       <section className="rounded-lg border border-zinc-200 bg-white p-6">
         <div className="flex flex-col gap-5 border-b border-zinc-200 pb-6 sm:flex-row sm:items-center sm:justify-between">
           <div className="flex items-center gap-3">
@@ -112,7 +135,7 @@ export default function HomeDashboardClient() {
         </div>
         <div className="pt-6">
           <div className="flex flex-wrap items-center gap-3">
-            <h2 className="text-lg font-bold">Earnings</h2>
+            <h2 className="text-lg font-bold">Demo support</h2>
             <select
               value={period}
               onChange={(event) =>
@@ -128,15 +151,15 @@ export default function HomeDashboardClient() {
             </select>
           </div>
           <p className="mt-5 text-4xl font-extrabold tracking-tight">
-            ${periodEarnings}
+            {periodEarnings} coffees
           </p>
         </div>
       </section>
 
       <div className="mt-5 grid gap-4 sm:grid-cols-2">
         <StatCard
-          label="All-time earnings"
-          value={`$${dashboard.totalEarnings}`}
+          label="All-time virtual coffees"
+          value={dashboard.totalEarnings.toString()}
         />
         <StatCard
           label="Unique supporters"
@@ -168,7 +191,7 @@ export default function HomeDashboardClient() {
                         : "border-zinc-200 bg-white text-zinc-700"
                     }`}
                   >
-                    ${amount}
+                    {amount} coffees
                   </button>
                 );
               })}
@@ -202,7 +225,7 @@ export default function HomeDashboardClient() {
                     )}
                   </div>
                   <div className="text-right">
-                    <p className="text-sm font-bold">+ ${donation.amount}</p>
+                    <p className="text-sm font-bold">+ {donation.amount} coffees</p>
                     <time className="mt-1 block text-xs text-zinc-500">
                       {new Intl.DateTimeFormat(undefined, {
                         dateStyle: "medium",

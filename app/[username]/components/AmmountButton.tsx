@@ -17,8 +17,9 @@ export function AmountButton({
           : "border-gray-200 hover:border-gray-400"
       }`}
     >
-      <span>☕</span>
-      <span>${value}</span>
+      <Coffee aria-hidden="true" className="size-4" />
+      <span>{value}</span>
     </button>
   );
 }
+import { Coffee } from "lucide-react";

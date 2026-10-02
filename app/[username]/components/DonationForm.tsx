@@ -32,7 +32,7 @@ export function DonationForm({
         </p>
       )}
 
-      <p className="text-sm text-black mb-2">Select amount:</p>
+      <p className="text-sm text-black mb-2">Select virtual coffees (demo only):</p>
       <div className="flex gap-2 flex-wrap mb-5 text-black">
         {[1, 2, 5, 10].map((amt) => (
           <AmountButton
@@ -74,7 +74,7 @@ export function DonationForm({
             : "bg-gray-100 text-gray-400 cursor-not-allowed"
         }`}
       >
-        {loading ? "Processing..." : "Support"}
+        {loading ? "Preparing..." : "Support with QR demo"}
       </button>
     </div>
   );

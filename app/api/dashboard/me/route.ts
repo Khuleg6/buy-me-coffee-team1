@@ -37,9 +37,9 @@ export async function GET(req: NextRequest) {
     ({ User_Donation_donorIdToUser: donor, ...donation }) => ({
       ...donation,
       donor: {
-        username: donor.username,
-        name: donor.Profile.name,
-        avatarImage: donor.Profile.avatarImage,
+        username: donor?.username ?? "guest",
+        name: donor?.Profile.name ?? "Guest supporter",
+        avatarImage: donor?.Profile.avatarImage ?? "",
       },
     }),
   );
@@ -57,6 +57,8 @@ export async function GET(req: NextRequest) {
       (total, donation) => total + donation.amount,
       0,
     ),
-    supporterCount: new Set(donations.map((donation) => donation.donorId)).size,
+    supporterCount: new Set(
+      donations.map((donation) => donation.donorId ?? `guest-${donation.id}`),
+    ).size,
   });
 }

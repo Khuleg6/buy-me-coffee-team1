@@ -239,6 +239,8 @@ export type UserWhereInput = {
   BankCard?: Prisma.XOR<Prisma.BankCardNullableScalarRelationFilter, Prisma.BankCardWhereInput> | null
   Donation_Donation_donorIdToUser?: Prisma.DonationListRelationFilter
   Donation_Donation_recipientIdToUser?: Prisma.DonationListRelationFilter
+  DonationIntent_DonationIntent_donorIdToUser?: Prisma.DonationIntentListRelationFilter
+  DonationIntent_DonationIntent_recipientIdToUser?: Prisma.DonationIntentListRelationFilter
   Profile?: Prisma.XOR<Prisma.ProfileScalarRelationFilter, Prisma.ProfileWhereInput>
 }
 
@@ -253,6 +255,8 @@ export type UserOrderByWithRelationInput = {
   BankCard?: Prisma.BankCardOrderByWithRelationInput
   Donation_Donation_donorIdToUser?: Prisma.DonationOrderByRelationAggregateInput
   Donation_Donation_recipientIdToUser?: Prisma.DonationOrderByRelationAggregateInput
+  DonationIntent_DonationIntent_donorIdToUser?: Prisma.DonationIntentOrderByRelationAggregateInput
+  DonationIntent_DonationIntent_recipientIdToUser?: Prisma.DonationIntentOrderByRelationAggregateInput
   Profile?: Prisma.ProfileOrderByWithRelationInput
 }
 
@@ -270,6 +274,8 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   BankCard?: Prisma.XOR<Prisma.BankCardNullableScalarRelationFilter, Prisma.BankCardWhereInput> | null
   Donation_Donation_donorIdToUser?: Prisma.DonationListRelationFilter
   Donation_Donation_recipientIdToUser?: Prisma.DonationListRelationFilter
+  DonationIntent_DonationIntent_donorIdToUser?: Prisma.DonationIntentListRelationFilter
+  DonationIntent_DonationIntent_recipientIdToUser?: Prisma.DonationIntentListRelationFilter
   Profile?: Prisma.XOR<Prisma.ProfileScalarRelationFilter, Prisma.ProfileWhereInput>
 }, "id" | "email" | "username" | "profileId">
 
@@ -310,6 +316,8 @@ export type UserCreateInput = {
   BankCard?: Prisma.BankCardCreateNestedOneWithoutUserInput
   Donation_Donation_donorIdToUser?: Prisma.DonationCreateNestedManyWithoutUser_Donation_donorIdToUserInput
   Donation_Donation_recipientIdToUser?: Prisma.DonationCreateNestedManyWithoutUser_Donation_recipientIdToUserInput
+  DonationIntent_DonationIntent_donorIdToUser?: Prisma.DonationIntentCreateNestedManyWithoutUser_DonationIntent_donorIdToUserInput
+  DonationIntent_DonationIntent_recipientIdToUser?: Prisma.DonationIntentCreateNestedManyWithoutUser_DonationIntent_recipientIdToUserInput
   Profile: Prisma.ProfileCreateNestedOneWithoutUserInput
 }
 
@@ -324,6 +332,8 @@ export type UserUncheckedCreateInput = {
   BankCard?: Prisma.BankCardUncheckedCreateNestedOneWithoutUserInput
   Donation_Donation_donorIdToUser?: Prisma.DonationUncheckedCreateNestedManyWithoutUser_Donation_donorIdToUserInput
   Donation_Donation_recipientIdToUser?: Prisma.DonationUncheckedCreateNestedManyWithoutUser_Donation_recipientIdToUserInput
+  DonationIntent_DonationIntent_donorIdToUser?: Prisma.DonationIntentUncheckedCreateNestedManyWithoutUser_DonationIntent_donorIdToUserInput
+  DonationIntent_DonationIntent_recipientIdToUser?: Prisma.DonationIntentUncheckedCreateNestedManyWithoutUser_DonationIntent_recipientIdToUserInput
 }
 
 export type UserUpdateInput = {
@@ -335,6 +345,8 @@ export type UserUpdateInput = {
   BankCard?: Prisma.BankCardUpdateOneWithoutUserNestedInput
   Donation_Donation_donorIdToUser?: Prisma.DonationUpdateManyWithoutUser_Donation_donorIdToUserNestedInput
   Donation_Donation_recipientIdToUser?: Prisma.DonationUpdateManyWithoutUser_Donation_recipientIdToUserNestedInput
+  DonationIntent_DonationIntent_donorIdToUser?: Prisma.DonationIntentUpdateManyWithoutUser_DonationIntent_donorIdToUserNestedInput
+  DonationIntent_DonationIntent_recipientIdToUser?: Prisma.DonationIntentUpdateManyWithoutUser_DonationIntent_recipientIdToUserNestedInput
   Profile?: Prisma.ProfileUpdateOneRequiredWithoutUserNestedInput
 }
 
@@ -349,6 +361,8 @@ export type UserUncheckedUpdateInput = {
   BankCard?: Prisma.BankCardUncheckedUpdateOneWithoutUserNestedInput
   Donation_Donation_donorIdToUser?: Prisma.DonationUncheckedUpdateManyWithoutUser_Donation_donorIdToUserNestedInput
   Donation_Donation_recipientIdToUser?: Prisma.DonationUncheckedUpdateManyWithoutUser_Donation_recipientIdToUserNestedInput
+  DonationIntent_DonationIntent_donorIdToUser?: Prisma.DonationIntentUncheckedUpdateManyWithoutUser_DonationIntent_donorIdToUserNestedInput
+  DonationIntent_DonationIntent_recipientIdToUser?: Prisma.DonationIntentUncheckedUpdateManyWithoutUser_DonationIntent_recipientIdToUserNestedInput
 }
 
 export type UserCreateManyInput = {
@@ -455,10 +469,12 @@ export type UserCreateNestedOneWithoutDonation_Donation_recipientIdToUserInput =
   connect?: Prisma.UserWhereUniqueInput
 }
 
-export type UserUpdateOneRequiredWithoutDonation_Donation_donorIdToUserNestedInput = {
+export type UserUpdateOneWithoutDonation_Donation_donorIdToUserNestedInput = {
   create?: Prisma.XOR<Prisma.UserCreateWithoutDonation_Donation_donorIdToUserInput, Prisma.UserUncheckedCreateWithoutDonation_Donation_donorIdToUserInput>
   connectOrCreate?: Prisma.UserCreateOrConnectWithoutDonation_Donation_donorIdToUserInput
   upsert?: Prisma.UserUpsertWithoutDonation_Donation_donorIdToUserInput
+  disconnect?: Prisma.UserWhereInput | boolean
+  delete?: Prisma.UserWhereInput | boolean
   connect?: Prisma.UserWhereUniqueInput
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutDonation_Donation_donorIdToUserInput, Prisma.UserUpdateWithoutDonation_Donation_donorIdToUserInput>, Prisma.UserUncheckedUpdateWithoutDonation_Donation_donorIdToUserInput>
 }
@@ -503,6 +519,34 @@ export type UserUncheckedUpdateOneWithoutProfileNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutProfileInput, Prisma.UserUpdateWithoutProfileInput>, Prisma.UserUncheckedUpdateWithoutProfileInput>
 }
 
+export type UserCreateNestedOneWithoutDonationIntent_DonationIntent_donorIdToUserInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutDonationIntent_DonationIntent_donorIdToUserInput, Prisma.UserUncheckedCreateWithoutDonationIntent_DonationIntent_donorIdToUserInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutDonationIntent_DonationIntent_donorIdToUserInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserCreateNestedOneWithoutDonationIntent_DonationIntent_recipientIdToUserInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutDonationIntent_DonationIntent_recipientIdToUserInput, Prisma.UserUncheckedCreateWithoutDonationIntent_DonationIntent_recipientIdToUserInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutDonationIntent_DonationIntent_recipientIdToUserInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutDonationIntent_DonationIntent_donorIdToUserNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutDonationIntent_DonationIntent_donorIdToUserInput, Prisma.UserUncheckedCreateWithoutDonationIntent_DonationIntent_donorIdToUserInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutDonationIntent_DonationIntent_donorIdToUserInput
+  upsert?: Prisma.UserUpsertWithoutDonationIntent_DonationIntent_donorIdToUserInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutDonationIntent_DonationIntent_donorIdToUserInput, Prisma.UserUpdateWithoutDonationIntent_DonationIntent_donorIdToUserInput>, Prisma.UserUncheckedUpdateWithoutDonationIntent_DonationIntent_donorIdToUserInput>
+}
+
+export type UserUpdateOneRequiredWithoutDonationIntent_DonationIntent_recipientIdToUserNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutDonationIntent_DonationIntent_recipientIdToUserInput, Prisma.UserUncheckedCreateWithoutDonationIntent_DonationIntent_recipientIdToUserInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutDonationIntent_DonationIntent_recipientIdToUserInput
+  upsert?: Prisma.UserUpsertWithoutDonationIntent_DonationIntent_recipientIdToUserInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutDonationIntent_DonationIntent_recipientIdToUserInput, Prisma.UserUpdateWithoutDonationIntent_DonationIntent_recipientIdToUserInput>, Prisma.UserUncheckedUpdateWithoutDonationIntent_DonationIntent_recipientIdToUserInput>
+}
+
 export type UserCreateWithoutBankCardInput = {
   email: string
   password: string
@@ -511,6 +555,8 @@ export type UserCreateWithoutBankCardInput = {
   updatedAt: Date | string
   Donation_Donation_donorIdToUser?: Prisma.DonationCreateNestedManyWithoutUser_Donation_donorIdToUserInput
   Donation_Donation_recipientIdToUser?: Prisma.DonationCreateNestedManyWithoutUser_Donation_recipientIdToUserInput
+  DonationIntent_DonationIntent_donorIdToUser?: Prisma.DonationIntentCreateNestedManyWithoutUser_DonationIntent_donorIdToUserInput
+  DonationIntent_DonationIntent_recipientIdToUser?: Prisma.DonationIntentCreateNestedManyWithoutUser_DonationIntent_recipientIdToUserInput
   Profile: Prisma.ProfileCreateNestedOneWithoutUserInput
 }
 
@@ -524,6 +570,8 @@ export type UserUncheckedCreateWithoutBankCardInput = {
   updatedAt: Date | string
   Donation_Donation_donorIdToUser?: Prisma.DonationUncheckedCreateNestedManyWithoutUser_Donation_donorIdToUserInput
   Donation_Donation_recipientIdToUser?: Prisma.DonationUncheckedCreateNestedManyWithoutUser_Donation_recipientIdToUserInput
+  DonationIntent_DonationIntent_donorIdToUser?: Prisma.DonationIntentUncheckedCreateNestedManyWithoutUser_DonationIntent_donorIdToUserInput
+  DonationIntent_DonationIntent_recipientIdToUser?: Prisma.DonationIntentUncheckedCreateNestedManyWithoutUser_DonationIntent_recipientIdToUserInput
 }
 
 export type UserCreateOrConnectWithoutBankCardInput = {
@@ -550,6 +598,8 @@ export type UserUpdateWithoutBankCardInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   Donation_Donation_donorIdToUser?: Prisma.DonationUpdateManyWithoutUser_Donation_donorIdToUserNestedInput
   Donation_Donation_recipientIdToUser?: Prisma.DonationUpdateManyWithoutUser_Donation_recipientIdToUserNestedInput
+  DonationIntent_DonationIntent_donorIdToUser?: Prisma.DonationIntentUpdateManyWithoutUser_DonationIntent_donorIdToUserNestedInput
+  DonationIntent_DonationIntent_recipientIdToUser?: Prisma.DonationIntentUpdateManyWithoutUser_DonationIntent_recipientIdToUserNestedInput
   Profile?: Prisma.ProfileUpdateOneRequiredWithoutUserNestedInput
 }
 
@@ -563,6 +613,8 @@ export type UserUncheckedUpdateWithoutBankCardInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   Donation_Donation_donorIdToUser?: Prisma.DonationUncheckedUpdateManyWithoutUser_Donation_donorIdToUserNestedInput
   Donation_Donation_recipientIdToUser?: Prisma.DonationUncheckedUpdateManyWithoutUser_Donation_recipientIdToUserNestedInput
+  DonationIntent_DonationIntent_donorIdToUser?: Prisma.DonationIntentUncheckedUpdateManyWithoutUser_DonationIntent_donorIdToUserNestedInput
+  DonationIntent_DonationIntent_recipientIdToUser?: Prisma.DonationIntentUncheckedUpdateManyWithoutUser_DonationIntent_recipientIdToUserNestedInput
 }
 
 export type UserCreateWithoutDonation_Donation_donorIdToUserInput = {
@@ -573,6 +625,8 @@ export type UserCreateWithoutDonation_Donation_donorIdToUserInput = {
   updatedAt: Date | string
   BankCard?: Prisma.BankCardCreateNestedOneWithoutUserInput
   Donation_Donation_recipientIdToUser?: Prisma.DonationCreateNestedManyWithoutUser_Donation_recipientIdToUserInput
+  DonationIntent_DonationIntent_donorIdToUser?: Prisma.DonationIntentCreateNestedManyWithoutUser_DonationIntent_donorIdToUserInput
+  DonationIntent_DonationIntent_recipientIdToUser?: Prisma.DonationIntentCreateNestedManyWithoutUser_DonationIntent_recipientIdToUserInput
   Profile: Prisma.ProfileCreateNestedOneWithoutUserInput
 }
 
@@ -586,6 +640,8 @@ export type UserUncheckedCreateWithoutDonation_Donation_donorIdToUserInput = {
   updatedAt: Date | string
   BankCard?: Prisma.BankCardUncheckedCreateNestedOneWithoutUserInput
   Donation_Donation_recipientIdToUser?: Prisma.DonationUncheckedCreateNestedManyWithoutUser_Donation_recipientIdToUserInput
+  DonationIntent_DonationIntent_donorIdToUser?: Prisma.DonationIntentUncheckedCreateNestedManyWithoutUser_DonationIntent_donorIdToUserInput
+  DonationIntent_DonationIntent_recipientIdToUser?: Prisma.DonationIntentUncheckedCreateNestedManyWithoutUser_DonationIntent_recipientIdToUserInput
 }
 
 export type UserCreateOrConnectWithoutDonation_Donation_donorIdToUserInput = {
@@ -601,6 +657,8 @@ export type UserCreateWithoutDonation_Donation_recipientIdToUserInput = {
   updatedAt: Date | string
   BankCard?: Prisma.BankCardCreateNestedOneWithoutUserInput
   Donation_Donation_donorIdToUser?: Prisma.DonationCreateNestedManyWithoutUser_Donation_donorIdToUserInput
+  DonationIntent_DonationIntent_donorIdToUser?: Prisma.DonationIntentCreateNestedManyWithoutUser_DonationIntent_donorIdToUserInput
+  DonationIntent_DonationIntent_recipientIdToUser?: Prisma.DonationIntentCreateNestedManyWithoutUser_DonationIntent_recipientIdToUserInput
   Profile: Prisma.ProfileCreateNestedOneWithoutUserInput
 }
 
@@ -614,6 +672,8 @@ export type UserUncheckedCreateWithoutDonation_Donation_recipientIdToUserInput =
   updatedAt: Date | string
   BankCard?: Prisma.BankCardUncheckedCreateNestedOneWithoutUserInput
   Donation_Donation_donorIdToUser?: Prisma.DonationUncheckedCreateNestedManyWithoutUser_Donation_donorIdToUserInput
+  DonationIntent_DonationIntent_donorIdToUser?: Prisma.DonationIntentUncheckedCreateNestedManyWithoutUser_DonationIntent_donorIdToUserInput
+  DonationIntent_DonationIntent_recipientIdToUser?: Prisma.DonationIntentUncheckedCreateNestedManyWithoutUser_DonationIntent_recipientIdToUserInput
 }
 
 export type UserCreateOrConnectWithoutDonation_Donation_recipientIdToUserInput = {
@@ -640,6 +700,8 @@ export type UserUpdateWithoutDonation_Donation_donorIdToUserInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   BankCard?: Prisma.BankCardUpdateOneWithoutUserNestedInput
   Donation_Donation_recipientIdToUser?: Prisma.DonationUpdateManyWithoutUser_Donation_recipientIdToUserNestedInput
+  DonationIntent_DonationIntent_donorIdToUser?: Prisma.DonationIntentUpdateManyWithoutUser_DonationIntent_donorIdToUserNestedInput
+  DonationIntent_DonationIntent_recipientIdToUser?: Prisma.DonationIntentUpdateManyWithoutUser_DonationIntent_recipientIdToUserNestedInput
   Profile?: Prisma.ProfileUpdateOneRequiredWithoutUserNestedInput
 }
 
@@ -653,6 +715,8 @@ export type UserUncheckedUpdateWithoutDonation_Donation_donorIdToUserInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   BankCard?: Prisma.BankCardUncheckedUpdateOneWithoutUserNestedInput
   Donation_Donation_recipientIdToUser?: Prisma.DonationUncheckedUpdateManyWithoutUser_Donation_recipientIdToUserNestedInput
+  DonationIntent_DonationIntent_donorIdToUser?: Prisma.DonationIntentUncheckedUpdateManyWithoutUser_DonationIntent_donorIdToUserNestedInput
+  DonationIntent_DonationIntent_recipientIdToUser?: Prisma.DonationIntentUncheckedUpdateManyWithoutUser_DonationIntent_recipientIdToUserNestedInput
 }
 
 export type UserUpsertWithoutDonation_Donation_recipientIdToUserInput = {
@@ -674,6 +738,8 @@ export type UserUpdateWithoutDonation_Donation_recipientIdToUserInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   BankCard?: Prisma.BankCardUpdateOneWithoutUserNestedInput
   Donation_Donation_donorIdToUser?: Prisma.DonationUpdateManyWithoutUser_Donation_donorIdToUserNestedInput
+  DonationIntent_DonationIntent_donorIdToUser?: Prisma.DonationIntentUpdateManyWithoutUser_DonationIntent_donorIdToUserNestedInput
+  DonationIntent_DonationIntent_recipientIdToUser?: Prisma.DonationIntentUpdateManyWithoutUser_DonationIntent_recipientIdToUserNestedInput
   Profile?: Prisma.ProfileUpdateOneRequiredWithoutUserNestedInput
 }
 
@@ -687,6 +753,8 @@ export type UserUncheckedUpdateWithoutDonation_Donation_recipientIdToUserInput =
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   BankCard?: Prisma.BankCardUncheckedUpdateOneWithoutUserNestedInput
   Donation_Donation_donorIdToUser?: Prisma.DonationUncheckedUpdateManyWithoutUser_Donation_donorIdToUserNestedInput
+  DonationIntent_DonationIntent_donorIdToUser?: Prisma.DonationIntentUncheckedUpdateManyWithoutUser_DonationIntent_donorIdToUserNestedInput
+  DonationIntent_DonationIntent_recipientIdToUser?: Prisma.DonationIntentUncheckedUpdateManyWithoutUser_DonationIntent_recipientIdToUserNestedInput
 }
 
 export type UserCreateWithoutProfileInput = {
@@ -698,6 +766,8 @@ export type UserCreateWithoutProfileInput = {
   BankCard?: Prisma.BankCardCreateNestedOneWithoutUserInput
   Donation_Donation_donorIdToUser?: Prisma.DonationCreateNestedManyWithoutUser_Donation_donorIdToUserInput
   Donation_Donation_recipientIdToUser?: Prisma.DonationCreateNestedManyWithoutUser_Donation_recipientIdToUserInput
+  DonationIntent_DonationIntent_donorIdToUser?: Prisma.DonationIntentCreateNestedManyWithoutUser_DonationIntent_donorIdToUserInput
+  DonationIntent_DonationIntent_recipientIdToUser?: Prisma.DonationIntentCreateNestedManyWithoutUser_DonationIntent_recipientIdToUserInput
 }
 
 export type UserUncheckedCreateWithoutProfileInput = {
@@ -710,6 +780,8 @@ export type UserUncheckedCreateWithoutProfileInput = {
   BankCard?: Prisma.BankCardUncheckedCreateNestedOneWithoutUserInput
   Donation_Donation_donorIdToUser?: Prisma.DonationUncheckedCreateNestedManyWithoutUser_Donation_donorIdToUserInput
   Donation_Donation_recipientIdToUser?: Prisma.DonationUncheckedCreateNestedManyWithoutUser_Donation_recipientIdToUserInput
+  DonationIntent_DonationIntent_donorIdToUser?: Prisma.DonationIntentUncheckedCreateNestedManyWithoutUser_DonationIntent_donorIdToUserInput
+  DonationIntent_DonationIntent_recipientIdToUser?: Prisma.DonationIntentUncheckedCreateNestedManyWithoutUser_DonationIntent_recipientIdToUserInput
 }
 
 export type UserCreateOrConnectWithoutProfileInput = {
@@ -737,6 +809,8 @@ export type UserUpdateWithoutProfileInput = {
   BankCard?: Prisma.BankCardUpdateOneWithoutUserNestedInput
   Donation_Donation_donorIdToUser?: Prisma.DonationUpdateManyWithoutUser_Donation_donorIdToUserNestedInput
   Donation_Donation_recipientIdToUser?: Prisma.DonationUpdateManyWithoutUser_Donation_recipientIdToUserNestedInput
+  DonationIntent_DonationIntent_donorIdToUser?: Prisma.DonationIntentUpdateManyWithoutUser_DonationIntent_donorIdToUserNestedInput
+  DonationIntent_DonationIntent_recipientIdToUser?: Prisma.DonationIntentUpdateManyWithoutUser_DonationIntent_recipientIdToUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutProfileInput = {
@@ -749,6 +823,148 @@ export type UserUncheckedUpdateWithoutProfileInput = {
   BankCard?: Prisma.BankCardUncheckedUpdateOneWithoutUserNestedInput
   Donation_Donation_donorIdToUser?: Prisma.DonationUncheckedUpdateManyWithoutUser_Donation_donorIdToUserNestedInput
   Donation_Donation_recipientIdToUser?: Prisma.DonationUncheckedUpdateManyWithoutUser_Donation_recipientIdToUserNestedInput
+  DonationIntent_DonationIntent_donorIdToUser?: Prisma.DonationIntentUncheckedUpdateManyWithoutUser_DonationIntent_donorIdToUserNestedInput
+  DonationIntent_DonationIntent_recipientIdToUser?: Prisma.DonationIntentUncheckedUpdateManyWithoutUser_DonationIntent_recipientIdToUserNestedInput
+}
+
+export type UserCreateWithoutDonationIntent_DonationIntent_donorIdToUserInput = {
+  email: string
+  password: string
+  username: string
+  createdAt?: Date | string
+  updatedAt: Date | string
+  BankCard?: Prisma.BankCardCreateNestedOneWithoutUserInput
+  Donation_Donation_donorIdToUser?: Prisma.DonationCreateNestedManyWithoutUser_Donation_donorIdToUserInput
+  Donation_Donation_recipientIdToUser?: Prisma.DonationCreateNestedManyWithoutUser_Donation_recipientIdToUserInput
+  DonationIntent_DonationIntent_recipientIdToUser?: Prisma.DonationIntentCreateNestedManyWithoutUser_DonationIntent_recipientIdToUserInput
+  Profile: Prisma.ProfileCreateNestedOneWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutDonationIntent_DonationIntent_donorIdToUserInput = {
+  id?: number
+  email: string
+  password: string
+  username: string
+  profileId: number
+  createdAt?: Date | string
+  updatedAt: Date | string
+  BankCard?: Prisma.BankCardUncheckedCreateNestedOneWithoutUserInput
+  Donation_Donation_donorIdToUser?: Prisma.DonationUncheckedCreateNestedManyWithoutUser_Donation_donorIdToUserInput
+  Donation_Donation_recipientIdToUser?: Prisma.DonationUncheckedCreateNestedManyWithoutUser_Donation_recipientIdToUserInput
+  DonationIntent_DonationIntent_recipientIdToUser?: Prisma.DonationIntentUncheckedCreateNestedManyWithoutUser_DonationIntent_recipientIdToUserInput
+}
+
+export type UserCreateOrConnectWithoutDonationIntent_DonationIntent_donorIdToUserInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutDonationIntent_DonationIntent_donorIdToUserInput, Prisma.UserUncheckedCreateWithoutDonationIntent_DonationIntent_donorIdToUserInput>
+}
+
+export type UserCreateWithoutDonationIntent_DonationIntent_recipientIdToUserInput = {
+  email: string
+  password: string
+  username: string
+  createdAt?: Date | string
+  updatedAt: Date | string
+  BankCard?: Prisma.BankCardCreateNestedOneWithoutUserInput
+  Donation_Donation_donorIdToUser?: Prisma.DonationCreateNestedManyWithoutUser_Donation_donorIdToUserInput
+  Donation_Donation_recipientIdToUser?: Prisma.DonationCreateNestedManyWithoutUser_Donation_recipientIdToUserInput
+  DonationIntent_DonationIntent_donorIdToUser?: Prisma.DonationIntentCreateNestedManyWithoutUser_DonationIntent_donorIdToUserInput
+  Profile: Prisma.ProfileCreateNestedOneWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutDonationIntent_DonationIntent_recipientIdToUserInput = {
+  id?: number
+  email: string
+  password: string
+  username: string
+  profileId: number
+  createdAt?: Date | string
+  updatedAt: Date | string
+  BankCard?: Prisma.BankCardUncheckedCreateNestedOneWithoutUserInput
+  Donation_Donation_donorIdToUser?: Prisma.DonationUncheckedCreateNestedManyWithoutUser_Donation_donorIdToUserInput
+  Donation_Donation_recipientIdToUser?: Prisma.DonationUncheckedCreateNestedManyWithoutUser_Donation_recipientIdToUserInput
+  DonationIntent_DonationIntent_donorIdToUser?: Prisma.DonationIntentUncheckedCreateNestedManyWithoutUser_DonationIntent_donorIdToUserInput
+}
+
+export type UserCreateOrConnectWithoutDonationIntent_DonationIntent_recipientIdToUserInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutDonationIntent_DonationIntent_recipientIdToUserInput, Prisma.UserUncheckedCreateWithoutDonationIntent_DonationIntent_recipientIdToUserInput>
+}
+
+export type UserUpsertWithoutDonationIntent_DonationIntent_donorIdToUserInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutDonationIntent_DonationIntent_donorIdToUserInput, Prisma.UserUncheckedUpdateWithoutDonationIntent_DonationIntent_donorIdToUserInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutDonationIntent_DonationIntent_donorIdToUserInput, Prisma.UserUncheckedCreateWithoutDonationIntent_DonationIntent_donorIdToUserInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutDonationIntent_DonationIntent_donorIdToUserInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutDonationIntent_DonationIntent_donorIdToUserInput, Prisma.UserUncheckedUpdateWithoutDonationIntent_DonationIntent_donorIdToUserInput>
+}
+
+export type UserUpdateWithoutDonationIntent_DonationIntent_donorIdToUserInput = {
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  username?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  BankCard?: Prisma.BankCardUpdateOneWithoutUserNestedInput
+  Donation_Donation_donorIdToUser?: Prisma.DonationUpdateManyWithoutUser_Donation_donorIdToUserNestedInput
+  Donation_Donation_recipientIdToUser?: Prisma.DonationUpdateManyWithoutUser_Donation_recipientIdToUserNestedInput
+  DonationIntent_DonationIntent_recipientIdToUser?: Prisma.DonationIntentUpdateManyWithoutUser_DonationIntent_recipientIdToUserNestedInput
+  Profile?: Prisma.ProfileUpdateOneRequiredWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutDonationIntent_DonationIntent_donorIdToUserInput = {
+  id?: Prisma.IntFieldUpdateOperationsInput | number
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  username?: Prisma.StringFieldUpdateOperationsInput | string
+  profileId?: Prisma.IntFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  BankCard?: Prisma.BankCardUncheckedUpdateOneWithoutUserNestedInput
+  Donation_Donation_donorIdToUser?: Prisma.DonationUncheckedUpdateManyWithoutUser_Donation_donorIdToUserNestedInput
+  Donation_Donation_recipientIdToUser?: Prisma.DonationUncheckedUpdateManyWithoutUser_Donation_recipientIdToUserNestedInput
+  DonationIntent_DonationIntent_recipientIdToUser?: Prisma.DonationIntentUncheckedUpdateManyWithoutUser_DonationIntent_recipientIdToUserNestedInput
+}
+
+export type UserUpsertWithoutDonationIntent_DonationIntent_recipientIdToUserInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutDonationIntent_DonationIntent_recipientIdToUserInput, Prisma.UserUncheckedUpdateWithoutDonationIntent_DonationIntent_recipientIdToUserInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutDonationIntent_DonationIntent_recipientIdToUserInput, Prisma.UserUncheckedCreateWithoutDonationIntent_DonationIntent_recipientIdToUserInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutDonationIntent_DonationIntent_recipientIdToUserInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutDonationIntent_DonationIntent_recipientIdToUserInput, Prisma.UserUncheckedUpdateWithoutDonationIntent_DonationIntent_recipientIdToUserInput>
+}
+
+export type UserUpdateWithoutDonationIntent_DonationIntent_recipientIdToUserInput = {
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  username?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  BankCard?: Prisma.BankCardUpdateOneWithoutUserNestedInput
+  Donation_Donation_donorIdToUser?: Prisma.DonationUpdateManyWithoutUser_Donation_donorIdToUserNestedInput
+  Donation_Donation_recipientIdToUser?: Prisma.DonationUpdateManyWithoutUser_Donation_recipientIdToUserNestedInput
+  DonationIntent_DonationIntent_donorIdToUser?: Prisma.DonationIntentUpdateManyWithoutUser_DonationIntent_donorIdToUserNestedInput
+  Profile?: Prisma.ProfileUpdateOneRequiredWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutDonationIntent_DonationIntent_recipientIdToUserInput = {
+  id?: Prisma.IntFieldUpdateOperationsInput | number
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  username?: Prisma.StringFieldUpdateOperationsInput | string
+  profileId?: Prisma.IntFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  BankCard?: Prisma.BankCardUncheckedUpdateOneWithoutUserNestedInput
+  Donation_Donation_donorIdToUser?: Prisma.DonationUncheckedUpdateManyWithoutUser_Donation_donorIdToUserNestedInput
+  Donation_Donation_recipientIdToUser?: Prisma.DonationUncheckedUpdateManyWithoutUser_Donation_recipientIdToUserNestedInput
+  DonationIntent_DonationIntent_donorIdToUser?: Prisma.DonationIntentUncheckedUpdateManyWithoutUser_DonationIntent_donorIdToUserNestedInput
 }
 
 
@@ -759,11 +975,15 @@ export type UserUncheckedUpdateWithoutProfileInput = {
 export type UserCountOutputType = {
   Donation_Donation_donorIdToUser: number
   Donation_Donation_recipientIdToUser: number
+  DonationIntent_DonationIntent_donorIdToUser: number
+  DonationIntent_DonationIntent_recipientIdToUser: number
 }
 
 export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   Donation_Donation_donorIdToUser?: boolean | UserCountOutputTypeCountDonation_Donation_donorIdToUserArgs
   Donation_Donation_recipientIdToUser?: boolean | UserCountOutputTypeCountDonation_Donation_recipientIdToUserArgs
+  DonationIntent_DonationIntent_donorIdToUser?: boolean | UserCountOutputTypeCountDonationIntent_DonationIntent_donorIdToUserArgs
+  DonationIntent_DonationIntent_recipientIdToUser?: boolean | UserCountOutputTypeCountDonationIntent_DonationIntent_recipientIdToUserArgs
 }
 
 /**
@@ -790,6 +1010,20 @@ export type UserCountOutputTypeCountDonation_Donation_recipientIdToUserArgs<ExtA
   where?: Prisma.DonationWhereInput
 }
 
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountDonationIntent_DonationIntent_donorIdToUserArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.DonationIntentWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountDonationIntent_DonationIntent_recipientIdToUserArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.DonationIntentWhereInput
+}
+
 
 export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -802,6 +1036,8 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   BankCard?: boolean | Prisma.User$BankCardArgs<ExtArgs>
   Donation_Donation_donorIdToUser?: boolean | Prisma.User$Donation_Donation_donorIdToUserArgs<ExtArgs>
   Donation_Donation_recipientIdToUser?: boolean | Prisma.User$Donation_Donation_recipientIdToUserArgs<ExtArgs>
+  DonationIntent_DonationIntent_donorIdToUser?: boolean | Prisma.User$DonationIntent_DonationIntent_donorIdToUserArgs<ExtArgs>
+  DonationIntent_DonationIntent_recipientIdToUser?: boolean | Prisma.User$DonationIntent_DonationIntent_recipientIdToUserArgs<ExtArgs>
   Profile?: boolean | Prisma.ProfileDefaultArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["user"]>
@@ -843,6 +1079,8 @@ export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   BankCard?: boolean | Prisma.User$BankCardArgs<ExtArgs>
   Donation_Donation_donorIdToUser?: boolean | Prisma.User$Donation_Donation_donorIdToUserArgs<ExtArgs>
   Donation_Donation_recipientIdToUser?: boolean | Prisma.User$Donation_Donation_recipientIdToUserArgs<ExtArgs>
+  DonationIntent_DonationIntent_donorIdToUser?: boolean | Prisma.User$DonationIntent_DonationIntent_donorIdToUserArgs<ExtArgs>
+  DonationIntent_DonationIntent_recipientIdToUser?: boolean | Prisma.User$DonationIntent_DonationIntent_recipientIdToUserArgs<ExtArgs>
   Profile?: boolean | Prisma.ProfileDefaultArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }
@@ -859,6 +1097,8 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     BankCard: Prisma.$BankCardPayload<ExtArgs> | null
     Donation_Donation_donorIdToUser: Prisma.$DonationPayload<ExtArgs>[]
     Donation_Donation_recipientIdToUser: Prisma.$DonationPayload<ExtArgs>[]
+    DonationIntent_DonationIntent_donorIdToUser: Prisma.$DonationIntentPayload<ExtArgs>[]
+    DonationIntent_DonationIntent_recipientIdToUser: Prisma.$DonationIntentPayload<ExtArgs>[]
     Profile: Prisma.$ProfilePayload<ExtArgs>
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
@@ -1266,6 +1506,8 @@ export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Typ
   BankCard<T extends Prisma.User$BankCardArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$BankCardArgs<ExtArgs>>): Prisma.Prisma__BankCardClient<runtime.Types.Result.GetResult<Prisma.$BankCardPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   Donation_Donation_donorIdToUser<T extends Prisma.User$Donation_Donation_donorIdToUserArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$Donation_Donation_donorIdToUserArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$DonationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   Donation_Donation_recipientIdToUser<T extends Prisma.User$Donation_Donation_recipientIdToUserArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$Donation_Donation_recipientIdToUserArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$DonationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  DonationIntent_DonationIntent_donorIdToUser<T extends Prisma.User$DonationIntent_DonationIntent_donorIdToUserArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$DonationIntent_DonationIntent_donorIdToUserArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$DonationIntentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  DonationIntent_DonationIntent_recipientIdToUser<T extends Prisma.User$DonationIntent_DonationIntent_recipientIdToUserArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$DonationIntent_DonationIntent_recipientIdToUserArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$DonationIntentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   Profile<T extends Prisma.ProfileDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ProfileDefaultArgs<ExtArgs>>): Prisma.Prisma__ProfileClient<runtime.Types.Result.GetResult<Prisma.$ProfilePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -1768,6 +2010,54 @@ export type User$Donation_Donation_recipientIdToUserArgs<ExtArgs extends runtime
   take?: number
   skip?: number
   distinct?: Prisma.DonationScalarFieldEnum | Prisma.DonationScalarFieldEnum[]
+}
+
+/**
+ * User.DonationIntent_DonationIntent_donorIdToUser
+ */
+export type User$DonationIntent_DonationIntent_donorIdToUserArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the DonationIntent
+   */
+  select?: Prisma.DonationIntentSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the DonationIntent
+   */
+  omit?: Prisma.DonationIntentOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.DonationIntentInclude<ExtArgs> | null
+  where?: Prisma.DonationIntentWhereInput
+  orderBy?: Prisma.DonationIntentOrderByWithRelationInput | Prisma.DonationIntentOrderByWithRelationInput[]
+  cursor?: Prisma.DonationIntentWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.DonationIntentScalarFieldEnum | Prisma.DonationIntentScalarFieldEnum[]
+}
+
+/**
+ * User.DonationIntent_DonationIntent_recipientIdToUser
+ */
+export type User$DonationIntent_DonationIntent_recipientIdToUserArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the DonationIntent
+   */
+  select?: Prisma.DonationIntentSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the DonationIntent
+   */
+  omit?: Prisma.DonationIntentOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.DonationIntentInclude<ExtArgs> | null
+  where?: Prisma.DonationIntentWhereInput
+  orderBy?: Prisma.DonationIntentOrderByWithRelationInput | Prisma.DonationIntentOrderByWithRelationInput[]
+  cursor?: Prisma.DonationIntentWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.DonationIntentScalarFieldEnum | Prisma.DonationIntentScalarFieldEnum[]
 }
 
 /**

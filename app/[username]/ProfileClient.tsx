@@ -24,7 +24,17 @@ type CreatorWithRelations = {
     socialMediaURL: string;
     backgroundImage: string;
   };
-  Donation_Donation_recipientIdToUser: any[];
+  Donation_Donation_recipientIdToUser: {
+    id: number;
+    amount: number;
+    specialMessage: string;
+    socialURLOrBuyMeCoffee: string;
+    createdAt: Date;
+    User_Donation_donorIdToUser: {
+      username: string;
+      Profile: { name: string; avatarImage: string };
+    } | null;
+  }[];
 };
 
 type Supporter = {
@@ -39,7 +49,6 @@ type Supporter = {
 interface ProfileClientProps {
   creator: CreatorWithRelations;
   isOwner: boolean;
-  sessionUser: { userId: number } | null;
 }
 
 const getSupporterName = (url: string) => {
@@ -59,7 +68,6 @@ const getSupporterName = (url: string) => {
 export default function ProfileClient({
   creator,
   isOwner,
-  sessionUser,
 }: ProfileClientProps) {
   const [profile, setProfile] = useState<ProfileDetails>({
     name: creator.Profile.name,
@@ -68,7 +76,6 @@ export default function ProfileClient({
     avatarUrl: creator.Profile.avatarImage,
   });
   const [isProfileEditorOpen, setIsProfileEditorOpen] = useState(false);
-  const [loading, setLoading] = useState(false);
   const [done, setDone] = useState(false);
   const [pendingDonation, setPendingDonation] = useState<{
     url: string;
@@ -105,54 +112,6 @@ export default function ProfileClient({
     message: string,
   ) => {
     setPendingDonation({ url, amount, message });
-  };
-
-  const handleDonationConfirm = async () => {
-    if (!pendingDonation) return;
-    setLoading(true);
-
-    try {
-      const response = await fetch("/api/payment/generate", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          amount: pendingDonation.amount,
-          specialMessage: pendingDonation.message,
-          socialURLOrBuyMeCoffee: pendingDonation.url,
-          recipientId: creator.id,
-          donorId: sessionUser?.userId || 1,
-          paymentType: "CARD",
-        }),
-      });
-
-      if (!response.ok) throw new Error("Payment initialization failed");
-      const data = await response.json();
-
-      const webhookRes = await fetch("/api/payment/webhook", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          transactionId: data.transactionId,
-          paymentType: "CARD",
-          recipientId: creator.id,
-          specialMessage: pendingDonation.message,
-          socialURLOrBuyMeCoffee: pendingDonation.url,
-          donorId: sessionUser?.userId || 1,
-        }),
-      });
-
-      if (webhookRes.ok) {
-        setPendingDonation(null);
-        setDone(true);
-      } else {
-        alert("Failed to record card payment parameters.");
-      }
-    } catch (error) {
-      console.error("Card processing pipeline exception:", error);
-      alert("Something went wrong handling the payment authorization.");
-    } finally {
-      setLoading(false);
-    }
   };
 
   if (done) {
@@ -231,7 +190,7 @@ export default function ProfileClient({
 
         <DonationForm
           creatorName={profile.name}
-          loading={loading}
+          loading={false}
           disabled={isOwner}
           onSupport={handleSupportTrigger}
         />
@@ -274,17 +233,17 @@ export default function ProfileClient({
         />
       )}
 
-      <PaymentDialog
-        open={!!pendingDonation}
+      {pendingDonation && <PaymentDialog
         onClose={() => setPendingDonation(null)}
-        amount={pendingDonation?.amount}
-        specialMessage={pendingDonation?.message}
-        socialURLOrBuyMeCoffee={pendingDonation?.url}
+        amount={pendingDonation.amount}
+        specialMessage={pendingDonation.message}
+        socialURLOrBuyMeCoffee={pendingDonation.url}
         recipientId={creator.id}
-        donorId={sessionUser?.userId}
-        onSubmitCard={handleDonationConfirm}
-        onConfirmQPay={handleDonationConfirm}
-      />
+        onConfirmQPay={() => {
+          setPendingDonation(null);
+          setDone(true);
+        }}
+      />}
     </main>
   );
 }

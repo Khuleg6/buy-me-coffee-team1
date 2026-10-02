@@ -38,7 +38,7 @@ export function RecentSupporters({
               />
               <div>
                 <p className="text-sm font-medium">
-                  {s.supporterName} bought ${s.amount} coffee
+                  {s.supporterName} sent {s.amount} virtual coffees
                 </p>
                 {s.specialMessage && (
                   <p className="text-xs text-gray-500 mt-0.5">

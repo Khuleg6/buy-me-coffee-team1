@@ -28,10 +28,14 @@ export type AggregateTransaction = {
 
 export type TransactionAvgAggregateOutputType = {
   amount: number | null
+  recipientId: number | null
+  donorId: number | null
 }
 
 export type TransactionSumAggregateOutputType = {
   amount: number | null
+  recipientId: number | null
+  donorId: number | null
 }
 
 export type TransactionMinAggregateOutputType = {
@@ -39,6 +43,10 @@ export type TransactionMinAggregateOutputType = {
   amount: number | null
   status: string | null
   paymentType: string | null
+  recipientId: number | null
+  donorId: number | null
+  specialMessage: string | null
+  socialURLOrBuyMeCoffee: string | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -48,6 +56,10 @@ export type TransactionMaxAggregateOutputType = {
   amount: number | null
   status: string | null
   paymentType: string | null
+  recipientId: number | null
+  donorId: number | null
+  specialMessage: string | null
+  socialURLOrBuyMeCoffee: string | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -57,6 +69,10 @@ export type TransactionCountAggregateOutputType = {
   amount: number
   status: number
   paymentType: number
+  recipientId: number
+  donorId: number
+  specialMessage: number
+  socialURLOrBuyMeCoffee: number
   createdAt: number
   updatedAt: number
   _all: number
@@ -65,10 +81,14 @@ export type TransactionCountAggregateOutputType = {
 
 export type TransactionAvgAggregateInputType = {
   amount?: true
+  recipientId?: true
+  donorId?: true
 }
 
 export type TransactionSumAggregateInputType = {
   amount?: true
+  recipientId?: true
+  donorId?: true
 }
 
 export type TransactionMinAggregateInputType = {
@@ -76,6 +96,10 @@ export type TransactionMinAggregateInputType = {
   amount?: true
   status?: true
   paymentType?: true
+  recipientId?: true
+  donorId?: true
+  specialMessage?: true
+  socialURLOrBuyMeCoffee?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -85,6 +109,10 @@ export type TransactionMaxAggregateInputType = {
   amount?: true
   status?: true
   paymentType?: true
+  recipientId?: true
+  donorId?: true
+  specialMessage?: true
+  socialURLOrBuyMeCoffee?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -94,6 +122,10 @@ export type TransactionCountAggregateInputType = {
   amount?: true
   status?: true
   paymentType?: true
+  recipientId?: true
+  donorId?: true
+  specialMessage?: true
+  socialURLOrBuyMeCoffee?: true
   createdAt?: true
   updatedAt?: true
   _all?: true
@@ -190,6 +222,10 @@ export type TransactionGroupByOutputType = {
   amount: number
   status: string
   paymentType: string | null
+  recipientId: number | null
+  donorId: number | null
+  specialMessage: string
+  socialURLOrBuyMeCoffee: string
   createdAt: Date
   updatedAt: Date
   _count: TransactionCountAggregateOutputType | null
@@ -222,8 +258,13 @@ export type TransactionWhereInput = {
   amount?: Prisma.FloatFilter<"Transaction"> | number
   status?: Prisma.StringFilter<"Transaction"> | string
   paymentType?: Prisma.StringNullableFilter<"Transaction"> | string | null
+  recipientId?: Prisma.IntNullableFilter<"Transaction"> | number | null
+  donorId?: Prisma.IntNullableFilter<"Transaction"> | number | null
+  specialMessage?: Prisma.StringFilter<"Transaction"> | string
+  socialURLOrBuyMeCoffee?: Prisma.StringFilter<"Transaction"> | string
   createdAt?: Prisma.DateTimeFilter<"Transaction"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Transaction"> | Date | string
+  Donation?: Prisma.XOR<Prisma.DonationNullableScalarRelationFilter, Prisma.DonationWhereInput> | null
 }
 
 export type TransactionOrderByWithRelationInput = {
@@ -231,8 +272,13 @@ export type TransactionOrderByWithRelationInput = {
   amount?: Prisma.SortOrder
   status?: Prisma.SortOrder
   paymentType?: Prisma.SortOrderInput | Prisma.SortOrder
+  recipientId?: Prisma.SortOrderInput | Prisma.SortOrder
+  donorId?: Prisma.SortOrderInput | Prisma.SortOrder
+  specialMessage?: Prisma.SortOrder
+  socialURLOrBuyMeCoffee?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  Donation?: Prisma.DonationOrderByWithRelationInput
 }
 
 export type TransactionWhereUniqueInput = Prisma.AtLeast<{
@@ -243,8 +289,13 @@ export type TransactionWhereUniqueInput = Prisma.AtLeast<{
   amount?: Prisma.FloatFilter<"Transaction"> | number
   status?: Prisma.StringFilter<"Transaction"> | string
   paymentType?: Prisma.StringNullableFilter<"Transaction"> | string | null
+  recipientId?: Prisma.IntNullableFilter<"Transaction"> | number | null
+  donorId?: Prisma.IntNullableFilter<"Transaction"> | number | null
+  specialMessage?: Prisma.StringFilter<"Transaction"> | string
+  socialURLOrBuyMeCoffee?: Prisma.StringFilter<"Transaction"> | string
   createdAt?: Prisma.DateTimeFilter<"Transaction"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Transaction"> | Date | string
+  Donation?: Prisma.XOR<Prisma.DonationNullableScalarRelationFilter, Prisma.DonationWhereInput> | null
 }, "id">
 
 export type TransactionOrderByWithAggregationInput = {
@@ -252,6 +303,10 @@ export type TransactionOrderByWithAggregationInput = {
   amount?: Prisma.SortOrder
   status?: Prisma.SortOrder
   paymentType?: Prisma.SortOrderInput | Prisma.SortOrder
+  recipientId?: Prisma.SortOrderInput | Prisma.SortOrder
+  donorId?: Prisma.SortOrderInput | Prisma.SortOrder
+  specialMessage?: Prisma.SortOrder
+  socialURLOrBuyMeCoffee?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   _count?: Prisma.TransactionCountOrderByAggregateInput
@@ -269,6 +324,10 @@ export type TransactionScalarWhereWithAggregatesInput = {
   amount?: Prisma.FloatWithAggregatesFilter<"Transaction"> | number
   status?: Prisma.StringWithAggregatesFilter<"Transaction"> | string
   paymentType?: Prisma.StringNullableWithAggregatesFilter<"Transaction"> | string | null
+  recipientId?: Prisma.IntNullableWithAggregatesFilter<"Transaction"> | number | null
+  donorId?: Prisma.IntNullableWithAggregatesFilter<"Transaction"> | number | null
+  specialMessage?: Prisma.StringWithAggregatesFilter<"Transaction"> | string
+  socialURLOrBuyMeCoffee?: Prisma.StringWithAggregatesFilter<"Transaction"> | string
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Transaction"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Transaction"> | Date | string
 }
@@ -278,8 +337,13 @@ export type TransactionCreateInput = {
   amount: number
   status?: string
   paymentType?: string | null
+  recipientId?: number | null
+  donorId?: number | null
+  specialMessage?: string
+  socialURLOrBuyMeCoffee?: string
   createdAt?: Date | string
   updatedAt?: Date | string
+  Donation?: Prisma.DonationCreateNestedOneWithoutTransactionInput
 }
 
 export type TransactionUncheckedCreateInput = {
@@ -287,8 +351,13 @@ export type TransactionUncheckedCreateInput = {
   amount: number
   status?: string
   paymentType?: string | null
+  recipientId?: number | null
+  donorId?: number | null
+  specialMessage?: string
+  socialURLOrBuyMeCoffee?: string
   createdAt?: Date | string
   updatedAt?: Date | string
+  Donation?: Prisma.DonationUncheckedCreateNestedOneWithoutTransactionInput
 }
 
 export type TransactionUpdateInput = {
@@ -296,8 +365,13 @@ export type TransactionUpdateInput = {
   amount?: Prisma.FloatFieldUpdateOperationsInput | number
   status?: Prisma.StringFieldUpdateOperationsInput | string
   paymentType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  recipientId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  donorId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  specialMessage?: Prisma.StringFieldUpdateOperationsInput | string
+  socialURLOrBuyMeCoffee?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  Donation?: Prisma.DonationUpdateOneWithoutTransactionNestedInput
 }
 
 export type TransactionUncheckedUpdateInput = {
@@ -305,8 +379,13 @@ export type TransactionUncheckedUpdateInput = {
   amount?: Prisma.FloatFieldUpdateOperationsInput | number
   status?: Prisma.StringFieldUpdateOperationsInput | string
   paymentType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  recipientId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  donorId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  specialMessage?: Prisma.StringFieldUpdateOperationsInput | string
+  socialURLOrBuyMeCoffee?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  Donation?: Prisma.DonationUncheckedUpdateOneWithoutTransactionNestedInput
 }
 
 export type TransactionCreateManyInput = {
@@ -314,6 +393,10 @@ export type TransactionCreateManyInput = {
   amount: number
   status?: string
   paymentType?: string | null
+  recipientId?: number | null
+  donorId?: number | null
+  specialMessage?: string
+  socialURLOrBuyMeCoffee?: string
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -323,6 +406,10 @@ export type TransactionUpdateManyMutationInput = {
   amount?: Prisma.FloatFieldUpdateOperationsInput | number
   status?: Prisma.StringFieldUpdateOperationsInput | string
   paymentType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  recipientId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  donorId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  specialMessage?: Prisma.StringFieldUpdateOperationsInput | string
+  socialURLOrBuyMeCoffee?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -332,8 +419,17 @@ export type TransactionUncheckedUpdateManyInput = {
   amount?: Prisma.FloatFieldUpdateOperationsInput | number
   status?: Prisma.StringFieldUpdateOperationsInput | string
   paymentType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  recipientId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  donorId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  specialMessage?: Prisma.StringFieldUpdateOperationsInput | string
+  socialURLOrBuyMeCoffee?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type TransactionNullableScalarRelationFilter = {
+  is?: Prisma.TransactionWhereInput | null
+  isNot?: Prisma.TransactionWhereInput | null
 }
 
 export type TransactionCountOrderByAggregateInput = {
@@ -341,12 +437,18 @@ export type TransactionCountOrderByAggregateInput = {
   amount?: Prisma.SortOrder
   status?: Prisma.SortOrder
   paymentType?: Prisma.SortOrder
+  recipientId?: Prisma.SortOrder
+  donorId?: Prisma.SortOrder
+  specialMessage?: Prisma.SortOrder
+  socialURLOrBuyMeCoffee?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
 
 export type TransactionAvgOrderByAggregateInput = {
   amount?: Prisma.SortOrder
+  recipientId?: Prisma.SortOrder
+  donorId?: Prisma.SortOrder
 }
 
 export type TransactionMaxOrderByAggregateInput = {
@@ -354,6 +456,10 @@ export type TransactionMaxOrderByAggregateInput = {
   amount?: Prisma.SortOrder
   status?: Prisma.SortOrder
   paymentType?: Prisma.SortOrder
+  recipientId?: Prisma.SortOrder
+  donorId?: Prisma.SortOrder
+  specialMessage?: Prisma.SortOrder
+  socialURLOrBuyMeCoffee?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -363,12 +469,34 @@ export type TransactionMinOrderByAggregateInput = {
   amount?: Prisma.SortOrder
   status?: Prisma.SortOrder
   paymentType?: Prisma.SortOrder
+  recipientId?: Prisma.SortOrder
+  donorId?: Prisma.SortOrder
+  specialMessage?: Prisma.SortOrder
+  socialURLOrBuyMeCoffee?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
 
 export type TransactionSumOrderByAggregateInput = {
   amount?: Prisma.SortOrder
+  recipientId?: Prisma.SortOrder
+  donorId?: Prisma.SortOrder
+}
+
+export type TransactionCreateNestedOneWithoutDonationInput = {
+  create?: Prisma.XOR<Prisma.TransactionCreateWithoutDonationInput, Prisma.TransactionUncheckedCreateWithoutDonationInput>
+  connectOrCreate?: Prisma.TransactionCreateOrConnectWithoutDonationInput
+  connect?: Prisma.TransactionWhereUniqueInput
+}
+
+export type TransactionUpdateOneWithoutDonationNestedInput = {
+  create?: Prisma.XOR<Prisma.TransactionCreateWithoutDonationInput, Prisma.TransactionUncheckedCreateWithoutDonationInput>
+  connectOrCreate?: Prisma.TransactionCreateOrConnectWithoutDonationInput
+  upsert?: Prisma.TransactionUpsertWithoutDonationInput
+  disconnect?: Prisma.TransactionWhereInput | boolean
+  delete?: Prisma.TransactionWhereInput | boolean
+  connect?: Prisma.TransactionWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.TransactionUpdateToOneWithWhereWithoutDonationInput, Prisma.TransactionUpdateWithoutDonationInput>, Prisma.TransactionUncheckedUpdateWithoutDonationInput>
 }
 
 export type FloatFieldUpdateOperationsInput = {
@@ -379,8 +507,72 @@ export type FloatFieldUpdateOperationsInput = {
   divide?: number
 }
 
-export type NullableStringFieldUpdateOperationsInput = {
-  set?: string | null
+export type TransactionCreateWithoutDonationInput = {
+  id?: string
+  amount: number
+  status?: string
+  paymentType?: string | null
+  recipientId?: number | null
+  donorId?: number | null
+  specialMessage?: string
+  socialURLOrBuyMeCoffee?: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+}
+
+export type TransactionUncheckedCreateWithoutDonationInput = {
+  id?: string
+  amount: number
+  status?: string
+  paymentType?: string | null
+  recipientId?: number | null
+  donorId?: number | null
+  specialMessage?: string
+  socialURLOrBuyMeCoffee?: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+}
+
+export type TransactionCreateOrConnectWithoutDonationInput = {
+  where: Prisma.TransactionWhereUniqueInput
+  create: Prisma.XOR<Prisma.TransactionCreateWithoutDonationInput, Prisma.TransactionUncheckedCreateWithoutDonationInput>
+}
+
+export type TransactionUpsertWithoutDonationInput = {
+  update: Prisma.XOR<Prisma.TransactionUpdateWithoutDonationInput, Prisma.TransactionUncheckedUpdateWithoutDonationInput>
+  create: Prisma.XOR<Prisma.TransactionCreateWithoutDonationInput, Prisma.TransactionUncheckedCreateWithoutDonationInput>
+  where?: Prisma.TransactionWhereInput
+}
+
+export type TransactionUpdateToOneWithWhereWithoutDonationInput = {
+  where?: Prisma.TransactionWhereInput
+  data: Prisma.XOR<Prisma.TransactionUpdateWithoutDonationInput, Prisma.TransactionUncheckedUpdateWithoutDonationInput>
+}
+
+export type TransactionUpdateWithoutDonationInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  amount?: Prisma.FloatFieldUpdateOperationsInput | number
+  status?: Prisma.StringFieldUpdateOperationsInput | string
+  paymentType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  recipientId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  donorId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  specialMessage?: Prisma.StringFieldUpdateOperationsInput | string
+  socialURLOrBuyMeCoffee?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type TransactionUncheckedUpdateWithoutDonationInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  amount?: Prisma.FloatFieldUpdateOperationsInput | number
+  status?: Prisma.StringFieldUpdateOperationsInput | string
+  paymentType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  recipientId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  donorId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  specialMessage?: Prisma.StringFieldUpdateOperationsInput | string
+  socialURLOrBuyMeCoffee?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 
@@ -390,8 +582,13 @@ export type TransactionSelect<ExtArgs extends runtime.Types.Extensions.InternalA
   amount?: boolean
   status?: boolean
   paymentType?: boolean
+  recipientId?: boolean
+  donorId?: boolean
+  specialMessage?: boolean
+  socialURLOrBuyMeCoffee?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  Donation?: boolean | Prisma.Transaction$DonationArgs<ExtArgs>
 }, ExtArgs["result"]["transaction"]>
 
 export type TransactionSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -399,6 +596,10 @@ export type TransactionSelectCreateManyAndReturn<ExtArgs extends runtime.Types.E
   amount?: boolean
   status?: boolean
   paymentType?: boolean
+  recipientId?: boolean
+  donorId?: boolean
+  specialMessage?: boolean
+  socialURLOrBuyMeCoffee?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }, ExtArgs["result"]["transaction"]>
@@ -408,6 +609,10 @@ export type TransactionSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.E
   amount?: boolean
   status?: boolean
   paymentType?: boolean
+  recipientId?: boolean
+  donorId?: boolean
+  specialMessage?: boolean
+  socialURLOrBuyMeCoffee?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }, ExtArgs["result"]["transaction"]>
@@ -417,20 +622,35 @@ export type TransactionSelectScalar = {
   amount?: boolean
   status?: boolean
   paymentType?: boolean
+  recipientId?: boolean
+  donorId?: boolean
+  specialMessage?: boolean
+  socialURLOrBuyMeCoffee?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type TransactionOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "amount" | "status" | "paymentType" | "createdAt" | "updatedAt", ExtArgs["result"]["transaction"]>
+export type TransactionOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "amount" | "status" | "paymentType" | "recipientId" | "donorId" | "specialMessage" | "socialURLOrBuyMeCoffee" | "createdAt" | "updatedAt", ExtArgs["result"]["transaction"]>
+export type TransactionInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  Donation?: boolean | Prisma.Transaction$DonationArgs<ExtArgs>
+}
+export type TransactionIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
+export type TransactionIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
 
 export type $TransactionPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "Transaction"
-  objects: {}
+  objects: {
+    Donation: Prisma.$DonationPayload<ExtArgs> | null
+  }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
     amount: number
     status: string
     paymentType: string | null
+    recipientId: number | null
+    donorId: number | null
+    specialMessage: string
+    socialURLOrBuyMeCoffee: string
     createdAt: Date
     updatedAt: Date
   }, ExtArgs["result"]["transaction"]>
@@ -827,6 +1047,7 @@ readonly fields: TransactionFieldRefs;
  */
 export interface Prisma__TransactionClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
+  Donation<T extends Prisma.Transaction$DonationArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Transaction$DonationArgs<ExtArgs>>): Prisma.Prisma__DonationClient<runtime.Types.Result.GetResult<Prisma.$DonationPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -860,6 +1081,10 @@ export interface TransactionFieldRefs {
   readonly amount: Prisma.FieldRef<"Transaction", 'Float'>
   readonly status: Prisma.FieldRef<"Transaction", 'String'>
   readonly paymentType: Prisma.FieldRef<"Transaction", 'String'>
+  readonly recipientId: Prisma.FieldRef<"Transaction", 'Int'>
+  readonly donorId: Prisma.FieldRef<"Transaction", 'Int'>
+  readonly specialMessage: Prisma.FieldRef<"Transaction", 'String'>
+  readonly socialURLOrBuyMeCoffee: Prisma.FieldRef<"Transaction", 'String'>
   readonly createdAt: Prisma.FieldRef<"Transaction", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"Transaction", 'DateTime'>
 }
@@ -879,6 +1104,10 @@ export type TransactionFindUniqueArgs<ExtArgs extends runtime.Types.Extensions.I
    */
   omit?: Prisma.TransactionOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.TransactionInclude<ExtArgs> | null
+  /**
    * Filter, which Transaction to fetch.
    */
   where: Prisma.TransactionWhereUniqueInput
@@ -897,6 +1126,10 @@ export type TransactionFindUniqueOrThrowArgs<ExtArgs extends runtime.Types.Exten
    */
   omit?: Prisma.TransactionOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.TransactionInclude<ExtArgs> | null
+  /**
    * Filter, which Transaction to fetch.
    */
   where: Prisma.TransactionWhereUniqueInput
@@ -914,6 +1147,10 @@ export type TransactionFindFirstArgs<ExtArgs extends runtime.Types.Extensions.In
    * Omit specific fields from the Transaction
    */
   omit?: Prisma.TransactionOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.TransactionInclude<ExtArgs> | null
   /**
    * Filter, which Transaction to fetch.
    */
@@ -963,6 +1200,10 @@ export type TransactionFindFirstOrThrowArgs<ExtArgs extends runtime.Types.Extens
    */
   omit?: Prisma.TransactionOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.TransactionInclude<ExtArgs> | null
+  /**
    * Filter, which Transaction to fetch.
    */
   where?: Prisma.TransactionWhereInput
@@ -1010,6 +1251,10 @@ export type TransactionFindManyArgs<ExtArgs extends runtime.Types.Extensions.Int
    * Omit specific fields from the Transaction
    */
   omit?: Prisma.TransactionOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.TransactionInclude<ExtArgs> | null
   /**
    * Filter, which Transactions to fetch.
    */
@@ -1059,6 +1304,10 @@ export type TransactionCreateArgs<ExtArgs extends runtime.Types.Extensions.Inter
    */
   omit?: Prisma.TransactionOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.TransactionInclude<ExtArgs> | null
+  /**
    * The data needed to create a Transaction.
    */
   data: Prisma.XOR<Prisma.TransactionCreateInput, Prisma.TransactionUncheckedCreateInput>
@@ -1106,6 +1355,10 @@ export type TransactionUpdateArgs<ExtArgs extends runtime.Types.Extensions.Inter
    * Omit specific fields from the Transaction
    */
   omit?: Prisma.TransactionOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.TransactionInclude<ExtArgs> | null
   /**
    * The data needed to update a Transaction.
    */
@@ -1173,6 +1426,10 @@ export type TransactionUpsertArgs<ExtArgs extends runtime.Types.Extensions.Inter
    */
   omit?: Prisma.TransactionOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.TransactionInclude<ExtArgs> | null
+  /**
    * The filter to search for the Transaction to update in case it exists.
    */
   where: Prisma.TransactionWhereUniqueInput
@@ -1199,6 +1456,10 @@ export type TransactionDeleteArgs<ExtArgs extends runtime.Types.Extensions.Inter
    */
   omit?: Prisma.TransactionOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.TransactionInclude<ExtArgs> | null
+  /**
    * Filter which Transaction to delete.
    */
   where: Prisma.TransactionWhereUniqueInput
@@ -1219,6 +1480,25 @@ export type TransactionDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.I
 }
 
 /**
+ * Transaction.Donation
+ */
+export type Transaction$DonationArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Donation
+   */
+  select?: Prisma.DonationSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Donation
+   */
+  omit?: Prisma.DonationOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.DonationInclude<ExtArgs> | null
+  where?: Prisma.DonationWhereInput
+}
+
+/**
  * Transaction without action
  */
 export type TransactionDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1230,4 +1510,8 @@ export type TransactionDefaultArgs<ExtArgs extends runtime.Types.Extensions.Inte
    * Omit specific fields from the Transaction
    */
   omit?: Prisma.TransactionOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.TransactionInclude<ExtArgs> | null
 }

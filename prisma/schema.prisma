@@ -25,12 +25,15 @@ model Donation {
   amount                          Int
   specialMessage                  String
   socialURLOrBuyMeCoffee          String
-  donorId                         Int
+  donorId                         Int?
   recipientId                     Int
+  transactionId                   String?  @unique
+  status                          DonationStatus @default(MANUAL_CONFIRMED)
   createdAt                       DateTime @default(now())
   updatedAt                       DateTime
-  User_Donation_donorIdToUser     User     @relation("Donation_donorIdToUser", fields: [donorId], references: [id])
+  User_Donation_donorIdToUser     User?    @relation("Donation_donorIdToUser", fields: [donorId], references: [id])
   User_Donation_recipientIdToUser User     @relation("Donation_recipientIdToUser", fields: [recipientId], references: [id])
+  Transaction                     Transaction? @relation(fields: [transactionId], references: [id])
 }
 
 model Profile {
@@ -41,6 +44,7 @@ model Profile {
   socialMediaURL  String
   backgroundImage String
   successMessage  String
+  paymentQrImage  String   @default("")
   createdAt       DateTime @default(now())
   updatedAt       DateTime
   User            User?
@@ -57,6 +61,8 @@ model User {
   BankCard                            BankCard?
   Donation_Donation_donorIdToUser     Donation[] @relation("Donation_donorIdToUser")
   Donation_Donation_recipientIdToUser Donation[] @relation("Donation_recipientIdToUser")
+  DonationIntent_DonationIntent_donorIdToUser     DonationIntent[] @relation("DonationIntent_donorIdToUser")
+  DonationIntent_DonationIntent_recipientIdToUser DonationIntent[] @relation("DonationIntent_recipientIdToUser")
   Profile                             Profile    @relation(fields: [profileId], references: [id])
 }
 model Transaction {
@@ -64,6 +70,38 @@ model Transaction {
   amount      Float
   status      String   @default("PENDING") // PENDING, COMPLETED, FAILED
   paymentType String? // CARD, QPAY
+  recipientId Int?
+  donorId     Int?
+  specialMessage String @default("")
+  socialURLOrBuyMeCoffee String @default("")
+  Donation    Donation?
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
+}
+
+model DonationIntent {
+  id                                    Int                  @id @default(autoincrement())
+  token                                 String               @unique
+  amount                                Int
+  specialMessage                        String
+  socialURLOrBuyMeCoffee                String
+  donorId                               Int
+  recipientId                           Int
+  status                                DonationIntentStatus @default(PENDING)
+  expiresAt                             DateTime
+  confirmedAt                           DateTime?
+  createdAt                             DateTime             @default(now())
+  updatedAt                             DateTime
+  User_DonationIntent_donorIdToUser     User                 @relation("DonationIntent_donorIdToUser", fields: [donorId], references: [id])
+  User_DonationIntent_recipientIdToUser User                 @relation("DonationIntent_recipientIdToUser", fields: [recipientId], references: [id])
+}
+
+enum DonationIntentStatus {
+  PENDING
+  CONFIRMED
+  EXPIRED
+}
+
+enum DonationStatus {
+  MANUAL_CONFIRMED
 }

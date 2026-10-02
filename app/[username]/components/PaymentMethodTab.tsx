@@ -26,7 +26,7 @@ export function MethodTabs({ value, onChange }: MethodTabsProps) {
             : "text-gray-400"
         }`}
       >
-        Q Pay
+        QR demo
       </button>
     </div>
   );

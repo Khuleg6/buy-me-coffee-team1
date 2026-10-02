@@ -22,7 +22,8 @@ export function Avatar({
       url.startsWith("https://"));
 
   if (isValidUrl && !hasError) {
-    const isLocal = url.startsWith("/uploads/");
+    const isLocalImage =
+      url.startsWith("/uploads/") || url.startsWith("/api/profile/image?");
     return (
       <Image
         src={url}
@@ -31,7 +32,7 @@ export function Avatar({
         height={size}
         className="rounded-full object-cover"
         style={{ width: size, height: size }}
-        unoptimized={isLocal}
+        unoptimized={isLocalImage}
         onError={() => setHasError(true)}
       />
     );

@@ -25,9 +25,9 @@ export async function GET(req: NextRequest) {
     donations.map(({ User_Donation_donorIdToUser: donor, ...donation }) => ({
       ...donation,
       donor: {
-        username: donor.username,
-        name: donor.Profile.name,
-        avatarImage: donor.Profile.avatarImage,
+        username: donor?.username ?? "guest",
+        name: donor?.Profile.name ?? "Guest supporter",
+        avatarImage: donor?.Profile.avatarImage ?? "",
       },
     })),
   );

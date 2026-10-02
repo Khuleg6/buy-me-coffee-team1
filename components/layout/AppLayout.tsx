@@ -2,9 +2,9 @@
 
 import { useState } from "react";
 import { ChevronDown } from "lucide-react";
-import { useRouter } from "next/navigation";
 import { Logo } from "@/components/common/Logo";
 import { UserAvatar } from "@/components/common/UserAvatar";
+import { signOut } from "@/lib/logout";
 import { AppSidebar } from "./AppSidebar";
 
 export function AppLayout({
@@ -15,14 +15,20 @@ export function AppLayout({
   children: React.ReactNode;
 }) {
   const [menuOpen, setMenuOpen] = useState(false);
-  const router = useRouter();
+  const [loggingOut, setLoggingOut] = useState(false);
+  const [logoutError, setLogoutError] = useState("");
 
-  const logout = () => {
-    localStorage.removeItem("token");
-    localStorage.removeItem("user");
-    document.cookie = "token=; Max-Age=0; path=/";
-    router.push("/login");
-    router.refresh();
+  const logout = async () => {
+    setLoggingOut(true);
+    setLogoutError("");
+    try {
+      await signOut();
+    } catch (error) {
+      setLogoutError(
+        error instanceof Error ? error.message : "Could not log out.",
+      );
+      setLoggingOut(false);
+    }
   };
 
   return (
@@ -52,10 +58,16 @@ export function AppLayout({
                 <button
                   type="button"
                   onClick={logout}
-                  className="w-full rounded px-3 py-2 text-left text-sm hover:bg-zinc-100"
+                  disabled={loggingOut}
+                  className="w-full rounded px-3 py-2 text-left text-sm hover:bg-zinc-100 disabled:cursor-not-allowed disabled:opacity-50"
                 >
-                  Log out
+                  {loggingOut ? "Logging out…" : "Log out"}
                 </button>
+                {logoutError && (
+                  <p role="alert" className="px-3 pb-2 text-xs text-red-600">
+                    {logoutError}
+                  </p>
+                )}
               </div>
             )}
           </div>

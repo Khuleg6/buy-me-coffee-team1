@@ -11,12 +11,23 @@ export async function GET(request: Request) {
 
   const transaction = await prisma.transaction.findUnique({
     where: { id: transactionId },
-    select: { id: true, status: true, amount: true },
+    select: { id: true, status: true, amount: true, recipientId: true },
   });
 
   if (!transaction) {
     return NextResponse.json({ error: "Not found" }, { status: 404 });
   }
 
-  return NextResponse.json(transaction);
+  const creator = transaction.recipientId
+    ? await prisma.user.findUnique({
+        where: { id: transaction.recipientId },
+        select: { username: true, Profile: { select: { name: true } } },
+      })
+    : null;
+  return NextResponse.json({
+    id: transaction.id,
+    status: transaction.status,
+    amount: transaction.amount,
+    creatorName: creator?.Profile.name || creator?.username || "Creator",
+  });
 }

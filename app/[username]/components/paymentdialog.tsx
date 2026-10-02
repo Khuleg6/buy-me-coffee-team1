@@ -1,135 +1,86 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import { X } from "lucide-react";
-import { CardDetails, CardForm } from "./Cardform";
-import { MethodTabs, PaymentMethod } from "./PaymentMethodTab";
 import { QPayPanel } from "./Qrmodal";
 
 interface PaymentDialogProps {
-  open: boolean;
   onClose: () => void;
-  onSubmitCard: (card: CardDetails) => void;
-  onConfirmQPay?: () => void;
+  onConfirmQPay: () => void;
   amount?: number;
   specialMessage?: string | null;
   socialURLOrBuyMeCoffee?: string | null;
-  recipientId?: number;
-  donorId?: number;
+  recipientId: number;
 }
 
 export function PaymentDialog({
-  open,
   onClose,
-  onSubmitCard,
   onConfirmQPay,
   amount,
   specialMessage,
   socialURLOrBuyMeCoffee,
   recipientId,
-  donorId,
 }: PaymentDialogProps) {
-  const [method, setMethod] = useState<PaymentMethod>("card");
-  const [qrCodeUrl, setQrCodeUrl] = useState<string>("");
+  const [qrCodeUrl, setQrCodeUrl] = useState("");
+  const [paymentUrl, setPaymentUrl] = useState("");
   const [transactionId, setTransactionId] = useState<string | null>(null);
-  const [generating, setGenerating] = useState(false);
-  const [paid, setPaid] = useState(false);
+  const [generating, setGenerating] = useState(true);
+  const [error, setError] = useState("");
 
   useEffect(() => {
-    if (!open || method !== "qpay" || !amount) return;
-
-    setGenerating(true);
-    setQrCodeUrl("");
-    setTransactionId(null);
-    setPaid(false);
+    if (!amount) return;
+    let cancelled = false;
 
     fetch("/api/payment/generate", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        amount,
-        specialMessage,
-        socialURLOrBuyMeCoffee,
-        recipientId,
-        donorId: donorId || 2,
-      }),
+      body: JSON.stringify({ amount, specialMessage, socialURLOrBuyMeCoffee, recipientId }),
     })
-      .then((res) => res.json())
-      .then((data) => {
-        setQrCodeUrl(data.qrCodeUrl);
-        setTransactionId(data.transactionId);
+      .then(async (res) => {
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.error || "Could not generate QR code");
+        return data;
       })
-      .catch(console.error)
-      .finally(() => setGenerating(false));
-  }, [
-    open,
-    method,
-    amount,
-    specialMessage,
-    socialURLOrBuyMeCoffee,
-    recipientId,
-  ]);
+      .then((data) => {
+        if (!cancelled) {
+          setQrCodeUrl(data.qrCodeUrl);
+          setPaymentUrl(data.paymentUrl);
+          setTransactionId(data.transactionId);
+        }
+      })
+      .catch((reason) => {
+        if (!cancelled) setError(reason instanceof Error ? reason.message : "Could not generate QR code");
+      })
+      .finally(() => { if (!cancelled) setGenerating(false); });
+
+    return () => { cancelled = true; };
+  }, [amount, specialMessage, socialURLOrBuyMeCoffee, recipientId]);
 
   useEffect(() => {
-    if (!transactionId || paid) return;
-
-    const interval = setInterval(async () => {
+    if (!transactionId) return;
+    const interval = window.setInterval(async () => {
       try {
-        const res = await fetch(
-          `/api/payment/status?transactionId=${transactionId}`,
-        );
+        const res = await fetch(`/api/payment/status?transactionId=${encodeURIComponent(transactionId)}`, { cache: "no-store" });
+        if (!res.ok) return;
         const data = await res.json();
         if (data.status === "COMPLETED") {
-          setPaid(true);
-          clearInterval(interval);
-          onConfirmQPay?.();
+          window.clearInterval(interval);
+          onConfirmQPay();
         }
-      } catch {}
+      } catch { /* Retry on the next poll. */ }
     }, 2000);
-
-    return () => clearInterval(interval);
-  }, [transactionId, paid, onConfirmQPay]);
-
-  // Reset when dialog closes
-  useEffect(() => {
-    if (!open) {
-      setMethod("card");
-      setQrCodeUrl("");
-      setTransactionId(null);
-      setPaid(false);
-    }
-  }, [open]);
-
-  if (!open) return null;
+    return () => window.clearInterval(interval);
+  }, [transactionId, onConfirmQPay]);
 
   return (
-    <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 px-4"
-      onClick={onClose}
-    >
-      <div
-        className="relative w-full max-w-md rounded-2xl bg-white p-6 max-h-[90vh] overflow-y-auto"
-        onClick={(e) => e.stopPropagation()}
-      >
-        <button
-          onClick={onClose}
-          aria-label="Close"
-          className="absolute right-5 top-5 text-gray-400 hover:text-gray-600"
-        >
-          <X size={18} />
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 px-4" onClick={onClose}>
+      <div role="dialog" aria-modal="true" aria-label="Demo donation QR code" className="relative max-h-[90vh] w-full max-w-md overflow-y-auto rounded-2xl bg-white p-6" onClick={(event) => event.stopPropagation()}>
+        <button type="button" onClick={onClose} aria-label="Close" className="absolute right-4 top-4 flex min-h-11 min-w-11 items-center justify-center text-zinc-600 hover:text-zinc-950">
+          <X size={20} aria-hidden="true" />
         </button>
-
-        <MethodTabs value={method} onChange={setMethod} />
-
-        {method === "card" ? (
-          <CardForm onContinue={onSubmitCard} />
-        ) : (
-          <QPayPanel
-            qrCodeUrl={qrCodeUrl}
-            generating={generating}
-            amount={amount}
-          />
-        )}
+        <div className="pt-8">
+          <QPayPanel qrCodeUrl={qrCodeUrl} paymentUrl={paymentUrl} generating={generating} amount={amount} error={error} />
+        </div>
       </div>
     </div>
   );

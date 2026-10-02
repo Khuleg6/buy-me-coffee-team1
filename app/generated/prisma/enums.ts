@@ -9,7 +9,17 @@
 * 🟢 You can import this file directly.
 */
 
+export const DonationIntentStatus = {
+  PENDING: 'PENDING',
+  CONFIRMED: 'CONFIRMED',
+  EXPIRED: 'EXPIRED'
+} as const
+
+export type DonationIntentStatus = (typeof DonationIntentStatus)[keyof typeof DonationIntentStatus]
 
 
-// This file is empty because there are no enums in the schema.
-export {}
+export const DonationStatus = {
+  MANUAL_CONFIRMED: 'MANUAL_CONFIRMED'
+} as const
+
+export type DonationStatus = (typeof DonationStatus)[keyof typeof DonationStatus]

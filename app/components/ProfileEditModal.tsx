@@ -98,7 +98,10 @@ export function ProfileEditModal({
                 height={64}
                 className="rounded-full object-cover"
                 style={{ width: 64, height: 64 }}
-                unoptimized={avatarPreview.startsWith("blob:")}
+                unoptimized={
+                  avatarPreview.startsWith("blob:") ||
+                  avatarPreview.startsWith("/api/profile/image?")
+                }
               />
             ) : (
               <div
