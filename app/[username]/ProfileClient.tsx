@@ -13,6 +13,7 @@ import { Avatar } from "./components/Avatar";
 import { RecentSupporters } from "./components/RecentSupporters";
 import { DonationForm } from "./components/DonationForm";
 import { PaymentDialog } from "./components/paymentdialog";
+import { AccountMenu } from "@/components/common/AccountMenu";
 
 type CreatorWithRelations = {
   id: number;
@@ -49,6 +50,7 @@ type Supporter = {
 interface ProfileClientProps {
   creator: CreatorWithRelations;
   isOwner: boolean;
+  viewer: { username: string; name: string; avatarImage: string } | null;
 }
 
 const getSupporterName = (url: string) => {
@@ -68,6 +70,7 @@ const getSupporterName = (url: string) => {
 export default function ProfileClient({
   creator,
   isOwner,
+  viewer,
 }: ProfileClientProps) {
   const [profile, setProfile] = useState<ProfileDetails>({
     name: creator.Profile.name,
@@ -137,6 +140,19 @@ export default function ProfileClient({
               <p className="text-base font-semibold">Buy Me Coffee</p>
             </div>
           </Link>
+          {viewer ? (
+            <AccountMenu
+              user={isOwner ? {
+                ...viewer,
+                name: profile.name,
+                avatarImage: profile.avatarUrl,
+              } : viewer}
+            />
+          ) : (
+            <Link href="/login" className="rounded-lg px-3 py-2 text-sm font-medium hover:bg-zinc-100 focus-visible:outline-2 focus-visible:outline-zinc-900">
+              Log in
+            </Link>
+          )}
         </div>
       </header>
       {isOwner ? (

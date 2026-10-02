@@ -33,8 +33,27 @@ export default async function ProfilePage({
   if (!creator) notFound();
 
   const isOwner = session?.userId === creator.id;
+  const viewer = session
+    ? isOwner
+      ? creator
+      : await prisma.user.findUnique({
+          where: { id: session.userId },
+          select: {
+            username: true,
+            Profile: { select: { name: true, avatarImage: true } },
+          },
+        })
+    : null;
 
   return (
-    <ProfileClient creator={creator} isOwner={isOwner} />
+    <ProfileClient
+      creator={creator}
+      isOwner={isOwner}
+      viewer={viewer ? {
+        username: viewer.username,
+        name: viewer.Profile.name,
+        avatarImage: viewer.Profile.avatarImage,
+      } : null}
+    />
   );
 }
